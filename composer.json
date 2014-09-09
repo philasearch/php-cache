@@ -1,15 +1,14 @@
 {
-    "name": "rubyrainbows/cache",
+    "name": "philasearch/cache",
     "description": "PHP Website Caching Library for HTML and Objects",
     "minimum-stability": "stable",
-    "license": "MIT",
     "type": "library",
-    "homepage": "https://github.com/rubyrainbows/php-cache",
-    "version": "1.0.2",
+    "homepage": "https://github.com/philasearch/php-cache",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Thomas Muntaner",
-            "email": "thomas.muntaner@rubyrainbows.com"
+            "email": "muntaner@philasearch.com"
         }
     ],
     "require": {
@@ -22,7 +21,7 @@
     },
     "autoload": {
         "psr-0": {
-            "RubyRainbows": "lib/"
+            "Philasearch": "lib/"
         }
     }
 }
