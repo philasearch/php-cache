@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/rubyrainbows/php-cache.png?branch=master)](https://travis-ci.org/rubyrainbows/php-cache)
+[![Latest Stable Version](https://poser.pugx.org/philasearch/cache/version.svg)](https://packagist.org/packages/philasearch/cache)
+[![Total Downloads](https://poser.pugx.org/philasearch/cache/downloads.svg)](https://packagist.org/packages/philasearch/cache)
+[![Build Status](https://travis-ci.org/philasearch/php-cache.png?branch=master)](https://travis-ci.org/philasearch/php-cache)
 
 # PHP Cache
 
@@ -11,7 +13,7 @@ Add the following to your composer.json
 ```json
 {
     "require": {
-        "rubyrainbows/cache": "dev-master"
+        "philasearch/cache": "dev-master"
     }
 }
 ```
