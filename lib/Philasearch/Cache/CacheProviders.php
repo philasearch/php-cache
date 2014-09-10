@@ -3,10 +3,8 @@
 /**
  * CacheProviders.php
  *
- * @author      Thomas Muntaner
- * @copyright   2014 Thomas Muntaner
+ * @author      Thomas Muntanerd
  * @version     1.0.0
- * 
  */
 
 namespace Philasearch\Cache;

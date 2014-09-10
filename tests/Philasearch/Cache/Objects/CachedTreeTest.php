@@ -1,14 +1,5 @@
 <?php
 
-/**
- * CachedTreeTest.php
- *
- * @author      Thomas Muntaner
- * @copyright   2014 Thomas Muntaner
- * @version     1.0.0
- * 
- */
-
 use Philasearch\Cache\Objects\CachedTree;
 
 class CachedTreeTest extends TestCase

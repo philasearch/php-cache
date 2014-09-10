@@ -4,9 +4,7 @@
  * CachedObject.php
  *
  * @author      Thomas Muntaner
- * @copyright   2014 Thomas Muntaner
  * @version     1.0.0
- * 
  */
 
 namespace Philasearch\Cache\Objects;
