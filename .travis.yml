@@ -6,3 +6,15 @@ before_install:
   - composer install
 services:
   - redis-server
+notifications:
+  email:
+    recipients:
+      - muntaner@philasearch.com
+      - enis@philasearch.com
+      - eisert@philasearch.com
+      - j.urbin@paper-free-office.de
+    on_success: change
+    on_failure: always
+  hipchat:
+    rooms:
+      secure: a+8/8MY5owWG2Xh7k6aY3OIjR8M0zXT1qag0DTiicERrZ5J9jzVwZUCPZbsvnvJSeINPcVUlEr+j6Id+ecZ61Iquo2Kl6DBfQ79o2ccCP1bgKZ1pnuo/991ETJ0UCfBzofX9KyFdGHCbqfa5NT5e2pWkRJ3toWYpFbuTlQ+N/XY=
