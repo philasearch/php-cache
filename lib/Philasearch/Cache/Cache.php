@@ -31,19 +31,17 @@ class Cache
      * @param $type
      * @param array $cache_config
      */
-    public static function setup($type, $cache_config=[])
+    public static function setup ( $type, $cache_config=[] )
     {
-        switch ($type):
-
+        switch ( $type )
+        {
             case CacheProviders::REDIS:
-               RedisClient::setup($cache_config);
-               self::$currentCache = CacheProviders::REDIS;
-               break;
-
+                RedisClient::setup($cache_config);
+                self::$currentCache = CacheProviders::REDIS;
+                break;
             default:
                 break;
-
-        endswitch;
+        }
     }
 
     /**
@@ -51,7 +49,7 @@ class Cache
      *
      * @return int
      */
-    public static function currentCache()
+    public static function currentCache ()
     {
         return self::$currentCache;
     }
@@ -64,19 +62,20 @@ class Cache
      *
      * @return null|RedisObject
      */
-    public static function object($key, $type)
+    public static function object ( $key, $type, $data=[], $expire=0 )
     {
-        switch (self::$currentCache):
+        switch ( self::$currentCache )
+        {
             case CacheProviders::REDIS:
-                switch ($type):
+                switch ( $type )
+                {
                     case ObjectType::OBJECT:
-                        return new RedisObject($key);
+                        return new RedisObject( $key, $data, $expire );
                     case ObjectType::TREE:
                         return new RedisTree($key);
-                endswitch;
+                }
                 break;
-        endswitch;
-
+        }
         return null;
     }
 }

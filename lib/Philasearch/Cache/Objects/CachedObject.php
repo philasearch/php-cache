@@ -33,11 +33,24 @@ class CachedObject
      * @param       $key
      * @param array $opts
      */
-    public function __construct ($key, array $opts=[])
+    public function __construct ( $key, array $opts=[] )
     {
         $this->namespace    = (array_key_exists('namespace', $opts))    ? $opts['namespace']            : $this->namespace;
         $this->key          = ($this->namespace != "")                  ? $this->namespace . ':' . $key : $key;
-        $this->base         = (array_key_exists('base', $opts))         ? $opts['base']                 : Cache::object($this->key, ObjectType::OBJECT);
+
+        $expire     = (array_key_exists('exipre', $opts))   ? $opts['expire']   : 0;
+        $data       = (array_key_exists('data', $opts))     ? $opts['data']     : [];
+        $this->base = (array_key_exists('base', $opts))     ? $opts['base']     : Cache::object($this->key, ObjectType::OBJECT, $data, $expire);
+    }
+
+    /**
+     * Expires an object from the cache
+     *
+     * @param string    $exire  The time until expire
+     */
+    public function expire ( $expire )
+    {
+        return $this->base->expire( $expire );
     }
 
     /**
@@ -47,9 +60,9 @@ class CachedObject
      *
      * @return mixed
      */
-    public function get($field)
+    public function get ( $field )
     {
-        return $this->base->get($field);
+        return $this->base->get( $field );
     }
 
     /**
@@ -59,9 +72,9 @@ class CachedObject
      *
      * @return mixed
      */
-    public function __get ($field)
+    public function __get ( $field )
     {
-        return $this->get($field);
+        return $this->get( $field );
     }
 
     /**
@@ -70,9 +83,9 @@ class CachedObject
      * @param $field
      * @param $value
      */
-    public function set ($field, $value)
+    public function set ( $field, $value )
     {
-        $this->base->set($field, $value);
+        $this->base->set( $field, $value );
     }
 
     /**
@@ -81,9 +94,9 @@ class CachedObject
      * @param $field
      * @param $value
      */
-    public function __set ($field, $value)
+    public function __set ( $field, $value )
     {
-        $this->set($field, $value);
+        $this->set( $field, $value );
     }
 
     /**
@@ -91,9 +104,9 @@ class CachedObject
      *
      * @param array $data
      */
-    public function fill (array $data)
+    public function fill ( array $data )
     {
-        $this->base->fill($data);
+        $this->base->fill( $data );
     }
 
     /**
@@ -111,17 +124,17 @@ class CachedObject
      *
      * @param $key
      */
-    public function delete($key)
+    public function delete ( $key )
     {
-        $this->base->delete($key, true);
+        $this->base->delete( $key, true );
     }
 
     /**
      * Deletes all the fields from the object
      *
      */
-    public function deleteAll()
+    public function deleteAll ()
     {
         $this->base->deleteAll();
     }
-} 
+}

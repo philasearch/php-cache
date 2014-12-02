@@ -30,7 +30,7 @@ class Client
      * @param array $config
      *
      */
-    public static function setup($config=[])
+    public static function setup ( $config=[] )
     {
         self::$config['scheme']     = (array_key_exists('scheme', $config))     ? $config['scheme']     : 'tcp';
         self::$config['host']       = (array_key_exists('host', $config))       ? $config['host']       : '127.0.0.1';
@@ -40,12 +40,22 @@ class Client
     }
 
     /**
+     * Expires a key in redis after a set time
+     *
+     * @param string    $key    The key in redis
+     * @param integer   $time   The time to expire
+     */
+    public function expire ( $key, $time )
+    {
+        return self::redisFunction( 'expire', $key, $time );
+    }
+
+    /**
      * Gets the value from the redis store
      *
      * @param $key
-     *
      */
-    public static function get($key)
+    public static function get ( $key )
     {
         return self::redisFunction( 'get', $key );
     }
@@ -57,14 +67,13 @@ class Client
      * @param $field
      *
      * @return mixed
-     *
      */
-    public static function hget($key, $field)
+    public static function hget ( $key, $field )
     {
         $return = self::redisFunction( 'hget', $key, $field );
 
         if ( !$return )
-            return array();
+            return [];
 
         return $return;
     }
@@ -77,9 +86,8 @@ class Client
      * @param $value
      *
      * @return mixed
-     *
      */
-    public static function hset($key, $field, $value)
+    public static function hset ( $key, $field, $value )
     {
         return self::redisFunction( 'hset', $key, $field, $value );
     }
@@ -90,9 +98,8 @@ class Client
      * @param $key
      *
      * @return mixed
-     *
      */
-    public static function hgetall($key)
+    public static function hgetall ( $key )
     {
         return self::redisFunction( 'hgetall', $key );
     }
@@ -104,9 +111,8 @@ class Client
      * @param $field
      *
      * @return mixed
-     *
      */
-    public static function hdel($key, $field)
+    public static function hdel ( $key, $field )
     {
         return self::redisFunction( 'hdel', $key, $field );
     }
@@ -116,18 +122,16 @@ class Client
      *
      * @param $key
      * @param $value
-     *
      */
-    public static function set($key, $value)
+    public static function set ( $key, $value )
     {
         return self::redisFunction( 'set', $key, $value );
     }
 
     /**
      * Clears the redis database
-     *
      */
-    public static function clear()
+    public static function clear ()
     {
         return self::redisFunction( 'flushdb' );
     }
@@ -136,14 +140,11 @@ class Client
      * Connects to the redis client
      *
      * @return null|RedisClient
-     *
      */
-    private static function connect()
+    private static function connect ()
     {
         if ( self::$config == null )
-        {
             self::setup();
-        }
 
         if ( self::$redis == null )
         {
@@ -163,7 +164,7 @@ class Client
         return self::$redis;
     }
 
-    public static function redisFunction()
+    public static function redisFunction ()
     {
         $redis      = self::connect();
         $args       = func_get_args();
@@ -187,5 +188,4 @@ class Client
 
         return false;
     }
-
 }

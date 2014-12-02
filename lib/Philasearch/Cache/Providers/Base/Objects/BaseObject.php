@@ -26,7 +26,14 @@ interface BaseObject
      *
      * @param array $data
      */
-    public function __construct($key, array $data=[]);
+    public function __construct ( $key, array $data=[], $expire=0 );
+
+    /**
+     * Expires the object after a set time
+     *
+     * @param interger  $time   The time to expire
+     */
+    public function expire ( $expire );
 
     /**
      * Sets a field's value for the object
@@ -36,7 +43,7 @@ interface BaseObject
      *
      * @return mixed
      */
-    public function __set($field, $value);
+    public function __set ( $field, $value );
 
     /**
      * Sets a field's value for the object
@@ -46,7 +53,7 @@ interface BaseObject
      *
      * @return mixed
      */
-    public function set($field, $value);
+    public function set ( $field, $value );
 
     /**
      * Gets a field's value for the object
@@ -55,7 +62,7 @@ interface BaseObject
      *
      * @return mixed
      */
-    public function __get($field);
+    public function __get ( $field );
 
     /**
      * Gets a field's value for the object
@@ -64,14 +71,14 @@ interface BaseObject
      *
      * @return mixed
      */
-    public function get($field);
+    public function get ( $field );
 
     /**
      * Gets all the values for the object
      *
      * @return mixed
      */
-    public function getAll();
+    public function getAll ();
 
     /**
      * Deletes a field from the object
@@ -81,12 +88,12 @@ interface BaseObject
      *
      * @return mixed
      */
-    public function delete($key, $refreshData=true);
+    public function delete ( $key, $refreshData=true );
 
     /**
      * Delete's all the fields from the object
      *
      * @return mixed
      */
-    public function deleteAll();
+    public function deleteAll ();
 }
