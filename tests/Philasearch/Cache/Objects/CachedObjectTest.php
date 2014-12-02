@@ -67,4 +67,4 @@ class CachedObjectTest extends PHPUnit_Framework_TestCase
         return \Mockery::mock('\Philasearch\Cache\Providers\BaseObject');
     }
 }
- 
+

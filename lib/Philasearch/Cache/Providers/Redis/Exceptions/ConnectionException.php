@@ -10,7 +10,7 @@ class ConnectionException extends \Exception
         {
             $message = "Could not connect to redis!";
         }
-        
+
         parent::__construct($message, $code, $previous);
     }
 }

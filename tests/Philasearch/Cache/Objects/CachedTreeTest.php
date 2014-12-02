@@ -59,4 +59,4 @@ class CachedTreeTest extends TestCase
         return \Mockery::mock('\Philasearch\Cache\Providers\BaseTree');
     }
 }
- 
+

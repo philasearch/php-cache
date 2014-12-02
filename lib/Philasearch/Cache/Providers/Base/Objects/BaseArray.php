@@ -50,4 +50,4 @@ interface CachedArray {
      */
     public function objects();
 
-} 
+}

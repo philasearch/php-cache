@@ -22,4 +22,4 @@ use MyCLabs\Enum\Enum;
 class CacheProviders extends Enum
 {
     const REDIS = 1;
-} 
+}
