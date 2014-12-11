@@ -42,8 +42,6 @@ class Node
         $this->address      = [0];
         $this->id           = $id;
         $this->tree         = $tree;
-
-        $this->resume();
     }
 
     /**
@@ -93,14 +91,16 @@ class Node
      * Adds a child to the node
      *
      */
-    public function addChild($id, $data=[])
+    public function addChild($id, $data=[], $saveToCache=true)
     {
         $child      = new Node($id, $this->tree, $data);
         $address    = $this->address;
         $address[]  = count($this->children);
-        $this->children[]    = $child;
 
-        $child->setAddress($address);
+        $this->children[] = $child;
+
+        $child->setAddress($address, $saveToCache);
+        $child->resume();
 
         return $child;
     }
@@ -111,14 +111,12 @@ class Node
      * @param $address
      *
      */
-    public function setAddress($address)
+    public function setAddress($address, $saveToCache=true)
     {
         $this->address = $address;
 
-        if ( $this->tree != null)
-        {
+        if ( $this->tree != null && $saveToCache )
             $this->tree->cacheNodeAddress($this->id, $address);
-        }
     }
 
     /**
@@ -146,7 +144,7 @@ class Node
      * Resumes a node
      *
      */
-    private function resume()
+    public function resume ()
     {
         if (array_key_exists('children', $this->data))
         {
@@ -155,9 +153,8 @@ class Node
 
             foreach ($children as $child_cache)
             {
-                $this->addChild($child_cache['id'],$child_cache);
+                $child = $this->addChild($child_cache['id'],$child_cache,false);
             }
         }
     }
-
 }

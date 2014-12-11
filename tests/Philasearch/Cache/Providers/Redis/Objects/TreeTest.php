@@ -137,17 +137,32 @@ class TreeTest extends TestCase
     public function testTreeResume()
     {
         $tree   = new Tree('tree');
-        $root   = $tree->makeRootNode('0', ['foo' => 'bar']);
-        $child  = $root->addChild('1', ["foo" => "bar2"]);
-
-        $child->addChild('2', ['foo' => 'bar3']);
+        $root   = $tree->makeRootNode('1', ['foo' => 'bar']);
+        $child  = $root->addChild('2', ["foo" => "bar2"]);
+        $child->addChild('3', ['foo' => 'bar3']);
         $tree->save();
 
-        $expect = $tree->getData();
+        $expectData = $tree->getData();
+
+        $this->assertEquals(['1','2','3'], $tree->branch(1));
+        $this->assertEquals(['2','3'], $tree->branch(2));
+        $this->assertEquals(['3'], $tree->branch(3));
 
         $tree = new Tree('tree');
 
-        $this->assertEquals($expect, $tree->getData());
+        $root = $tree->getRoot();
+        $child = $root->getChildren()[0];
+        $grandchild = $child->getChildren()[0];
+
+        $this->assertEquals([0], $root->getAddress());
+        $this->assertEquals([0,0], $child->getAddress());
+        $this->assertEquals([0,0,0], $grandchild->getAddress());
+
+        $this->assertEquals(['1','2','3'], $tree->branch(1));
+        $this->assertEquals(['2','3'], $tree->branch(2));
+        $this->assertEquals(['3'], $tree->branch(3));
+
+        $this->assertEquals($expectData, $tree->getData());
     }
 
     public function testTreeBranch()

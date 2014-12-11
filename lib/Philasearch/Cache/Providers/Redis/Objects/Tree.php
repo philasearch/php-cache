@@ -171,6 +171,16 @@ class Tree implements BaseTree
     }
 
     /**
+     * Returns the root node
+     *
+     * @return Node
+     */
+    public function getRoot ()
+    {
+        return $this->root;
+    }
+
+    /**
      * Returns the address book key
      *
      * @return string
@@ -192,6 +202,7 @@ class Tree implements BaseTree
         if ($cache != null)
         {
             $this->root = new Node($cache[0]['id'], $this, $cache[0]);
+            $this->root->resume();
         }
     }
 }
