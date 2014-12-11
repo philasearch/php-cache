@@ -66,6 +66,13 @@ interface BaseTree
     public function getData($id=null);
 
     /**
+     * Returns whether or not the tree is empty
+     *
+     * @return boolean
+     */
+    public function isEmpty ();
+
+    /**
      * Returns an array of the id of the node and its children
      *
      * @param $id

@@ -24,6 +24,18 @@ class TreeTest extends TestCase
         $this->assertEquals([0], Tree\AddressBook::get('key:addresses', "id"));
     }
 
+    public function testIsEmpty ()
+    {
+        $tree = new Tree('empty_tree');
+        $this->assertTrue($tree->isEmpty());
+
+        $tree->makeRootNode("id");
+        $this->assertFalse($tree->isEmpty());
+
+        $tree = new Tree('empty_tree');
+        $this->assertFalse($tree->isEmpty());
+    }
+
     public function testGetDataWithHierarchyDepth1()
     {
         $tree = new Tree('key');

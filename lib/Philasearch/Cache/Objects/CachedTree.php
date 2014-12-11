@@ -91,6 +91,16 @@ class CachedTree
     }
 
     /**
+     * Returns whether or not the tree is empty
+     *
+     * @return boolean
+     */
+    public function isEmpty ()
+    {
+        return $this->base->isEmpty();
+    }
+
+    /**
      * Returns an array of the id of the node and its children
      *
      * @param $id
@@ -102,4 +112,4 @@ class CachedTree
     {
         return $this->base->branch($id);
     }
-} 
+}

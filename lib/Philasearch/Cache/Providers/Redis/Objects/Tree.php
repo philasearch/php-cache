@@ -181,6 +181,16 @@ class Tree implements BaseTree
     }
 
     /**
+     * Returns whether or not the tree is empty
+     *
+     * @return boolean
+     */
+    public function isEmpty ()
+    {
+        return ($this->getCachedData() == null);
+    }
+
+    /**
      * Returns the address book key
      *
      * @return string
