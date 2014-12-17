@@ -31,12 +31,12 @@ class Cache
      * @param $type
      * @param array $cache_config
      */
-    public static function setup ( $type, $cache_config=[] )
+    public static function setup ( $type, $cacheConfig=null, $cacheOptions=[] )
     {
         switch ( $type )
         {
             case CacheProviders::REDIS:
-                RedisClient::setup($cache_config);
+                RedisClient::setup($cacheConfig, $cacheOptions);
                 self::$currentCache = CacheProviders::REDIS;
                 break;
             default:

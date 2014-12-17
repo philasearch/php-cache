@@ -23,6 +23,7 @@ class Client
 {
     private static $redis   = null;
     private static $config  = [];
+    private static $options = [];
 
     /**
      * Configures the Redis Client
@@ -30,11 +31,10 @@ class Client
      * @param array $config
      *
      */
-    public static function setup ( $config=[] )
+    public static function setup ( $config=null, $options=[] )
     {
-        self::$config['scheme']     = (array_key_exists('scheme', $config))     ? $config['scheme']     : 'tcp';
-        self::$config['host']       = (array_key_exists('host', $config))       ? $config['host']       : '127.0.0.1';
-        self::$config['database']   = (array_key_exists('database', $config))   ? $config['database']   : '0';
+        if ( !$config )
+            self::$config = 'tcp://127.0.0.1:6379?database=0';
 
         return self::connect();
     }
@@ -148,7 +148,7 @@ class Client
 
         if ( self::$redis == null )
         {
-            self::$redis = new RedisClient( self::$config );
+            self::$redis = new RedisClient( self::$config, self::$options );
 
             try
             {
