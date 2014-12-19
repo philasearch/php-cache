@@ -33,8 +33,8 @@ class Client
      */
     public static function setup ( $config=null, $options=[] )
     {
-        if ( !$config )
-            self::$config = 'tcp://127.0.0.1:6379?database=0';
+        self::$config   = ( $config ) ? $config : 'tcp://127.0.0.1:6379?database=0';
+        self::$options  = $options;
 
         return self::connect();
     }

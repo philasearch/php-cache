@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "type": "library",
     "homepage": "https://github.com/philasearch/php-cache",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "authors": [
         {
             "name": "Thomas Muntaner",
