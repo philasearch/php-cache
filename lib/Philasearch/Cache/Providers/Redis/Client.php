@@ -164,6 +164,16 @@ class Client
         return self::$redis;
     }
 
+    /**
+     *  Gets all keys from the redis store matching pattern
+     *
+     *  @param $pattern
+     */
+    public static function keys ( $pattern )
+    {
+        return self::redisFunction( 'keys', $pattern );
+    }
+
     public static function redisFunction ()
     {
         $redis      = self::connect();
