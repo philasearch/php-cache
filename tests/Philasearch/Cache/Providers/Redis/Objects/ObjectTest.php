@@ -1,21 +1,20 @@
 <?php
 
 use Philasearch\Cache\Providers\Redis\Objects\Object as Object;
-use Philasearch\Cache\Providers\Redis\Client as Client;
 
 class ObjectTest extends TestCase
 {
     public function testConstructor()
     {
         new Object('foo_key', ['foo' => 'bar']);
-        $this->assertEquals('bar', Client::hget('foo_key', 'foo'));
+        $this->assertEquals('bar', $this->client->hget('foo_key', 'foo'));
     }
 
     public function testSet()
     {
         $object = new Object('foo_key', ['foo' => 'bar']);
         $object->foo = 'bar2';
-        $this->assertEquals('bar2', Client::hget('foo_key', 'foo'));
+        $this->assertEquals('bar2', $this->client->hget('foo_key', 'foo'));
     }
 
     public function testGet()
@@ -34,7 +33,7 @@ class ObjectTest extends TestCase
     {
         new Object('foo_key', ['foo' => 'bar']);
         new Object('foo_key');
-        $this->assertEquals('bar', Client::hget('foo_key', 'foo'));
+        $this->assertEquals('bar', $this->client->hget('foo_key', 'foo'));
     }
 
     public function testDeleteAll()

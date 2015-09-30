@@ -1,5 +1,6 @@
 <?php
 
+use Mockery\MockInterface;
 use Philasearch\Cache\Objects\CachedTree;
 
 class CachedTreeTest extends TestCase
@@ -7,7 +8,7 @@ class CachedTreeTest extends TestCase
     public function testSave()
     {
         $base = $this->base();
-        $tree = new CachedTree('key', ['base' => $base]);
+        $tree = new CachedTree('key', '', $base );
 
         $base->shouldReceive('save')->once();
 
@@ -17,7 +18,7 @@ class CachedTreeTest extends TestCase
     public function testCacheNodeAddress()
     {
         $base = $this->base();
-        $tree = new CachedTree('key', ['base' => $base]);
+        $tree = new CachedTree('key', '', $base );
 
         $base->shouldReceive('cacheNodeAddress')->once();
 
@@ -27,7 +28,7 @@ class CachedTreeTest extends TestCase
     public function testMakeRootNode()
     {
         $base = $this->base();
-        $tree = new CachedTree('key', ['base' => $base]);
+        $tree = new CachedTree('key', '', $base );
 
         $base->shouldReceive('makeRootNode')->once();
 
@@ -37,7 +38,7 @@ class CachedTreeTest extends TestCase
     public function testGetData()
     {
         $base = $this->base();
-        $tree = new CachedTree('key', ['base' => $base]);
+        $tree = new CachedTree('key', '', $base );
 
         $base->shouldReceive('getData')->once();
 
@@ -47,16 +48,19 @@ class CachedTreeTest extends TestCase
     public function testBranch()
     {
         $base = $this->base();
-        $tree = new CachedTree('key', ['base' => $base]);
+        $tree = new CachedTree('key', '', $base );
 
         $base->shouldReceive('branch')->once();
 
         $tree->branch(1);
     }
 
+    /**
+     * @return MockInterface
+     */
     private function base()
     {
-        return \Mockery::mock('\Philasearch\Cache\Providers\BaseTree');
+        return \Mockery::mock('\Philasearch\Cache\Providers\Base\Objects\BaseTree');
     }
 }
 

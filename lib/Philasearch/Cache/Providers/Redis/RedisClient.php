@@ -9,27 +9,40 @@
 
 namespace Philasearch\Cache\Providers\Redis;
 
-use Predis\Client as RedisClient;
+use Predis\Client;
 
 /**
- * Class Client
+ * Class RedisClient
  *
- * Redis client
+ * A client for redis
  *
  * @package Philasearch\Cache\Providers\Redis
  *
  */
-class Client
+class RedisClient
 {
+    /**
+     * @var Client
+     */
     private static $redis   = null;
+
+    /**
+     * @var array
+     */
     private static $config  = [];
+
+    /**
+     * @var array
+     */
     private static $options = [];
 
     /**
      * Configures the Redis Client
      *
      * @param array $config
+     * @param array $options
      *
+     * @return mixed
      */
     public static function setup ( $config=null, $options=[] )
     {
@@ -44,6 +57,8 @@ class Client
      *
      * @param string    $key    The key in redis
      * @param integer   $time   The time to expire
+     *
+     * @return mixed
      */
     public function expire ( $key, $time )
     {
@@ -54,8 +69,10 @@ class Client
      * Gets the value from the redis store
      *
      * @param $key
+     *
+     * @return mixed
      */
-    public static function get ( $key )
+    public function get ( $key )
     {
         return self::redisFunction( 'get', $key );
     }
@@ -68,7 +85,7 @@ class Client
      *
      * @return mixed
      */
-    public static function hget ( $key, $field )
+    public function hget ( $key, $field )
     {
         $return = self::redisFunction( 'hget', $key, $field );
 
@@ -87,7 +104,7 @@ class Client
      *
      * @return mixed
      */
-    public static function hset ( $key, $field, $value )
+    public function hset ( $key, $field, $value )
     {
         return self::redisFunction( 'hset', $key, $field, $value );
     }
@@ -99,7 +116,7 @@ class Client
      *
      * @return mixed
      */
-    public static function hgetall ( $key )
+    public function hgetall ( $key )
     {
         return self::redisFunction( 'hgetall', $key );
     }
@@ -112,7 +129,7 @@ class Client
      *
      * @return mixed
      */
-    public static function hdel ( $key, $field )
+    public function hdel ( $key, $field )
     {
         return self::redisFunction( 'hdel', $key, $field );
     }
@@ -122,8 +139,10 @@ class Client
      *
      * @param $key
      * @param $value
+     *
+     * @return mixed
      */
-    public static function set ( $key, $value )
+    public function set ( $key, $value )
     {
         return self::redisFunction( 'set', $key, $value );
     }
@@ -131,9 +150,52 @@ class Client
     /**
      * Clears the redis database
      */
-    public static function clear ()
+    public function clear ()
     {
         return self::redisFunction( 'flushdb' );
+    }
+
+
+
+    /**
+     *  Gets all keys from the redis store matching pattern
+     *
+     * @param $pattern
+     *
+     * @return mixed
+     */
+    public function keys ( $pattern )
+    {
+        return self::redisFunction( 'keys', $pattern );
+    }
+
+    /**
+     * Runs a redis function
+     *
+     * @return mixed
+     *
+     * @throws Exceptions\CommandException
+     * @throws Exceptions\ConnectionException
+     */
+    private static function redisFunction ()
+    {
+        $redis      = self::connect();
+        $args       = func_get_args();
+        $function   = array_shift( $args );
+
+        if ( $redis )
+        {
+            try
+            {
+                return call_user_func_array( array($redis, $function), $args );
+            }
+            catch ( \Exception $e )
+            {
+                throw new Exceptions\CommandException( $function, $args );
+            }
+        }
+
+        throw new Exceptions\ConnectionException();
     }
 
     /**
@@ -148,13 +210,13 @@ class Client
 
         if ( self::$redis == null )
         {
-            self::$redis = new RedisClient( self::$config, self::$options );
+            self::$redis = new Client( self::$config, self::$options );
 
             try
             {
                 self::$redis->connect();
             }
-            catch ( \Predis\Connection\ConnectionException $e )
+            catch ( \Exception $e )
             {
                 self::$redis = null;
                 return false;
@@ -162,40 +224,5 @@ class Client
         }
 
         return self::$redis;
-    }
-
-    /**
-     *  Gets all keys from the redis store matching pattern
-     *
-     *  @param $pattern
-     */
-    public static function keys ( $pattern )
-    {
-        return self::redisFunction( 'keys', $pattern );
-    }
-
-    public static function redisFunction ()
-    {
-        $redis      = self::connect();
-        $args       = func_get_args();
-        $function   = array_shift( $args );
-
-        if ( $redis )
-        {
-            try
-            {
-                return call_user_func_array( array($redis, $function), $args );
-            }
-            catch ( \Predis\ServerException $e )
-            {
-                throw new Exceptions\CommandException( $function, $args );
-            }
-        }
-        else
-        {
-            throw new Exceptions\ConnectionException();
-        }
-
-        return false;
     }
 }

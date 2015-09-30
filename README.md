@@ -13,7 +13,7 @@ Add the following to your composer.json
 ```json
 {
     "require": {
-        "philasearch/cache": "dev-master"
+        "philasearch/cache": "~1.1.0"
     }
 }
 ```
@@ -47,7 +47,7 @@ Cache::setup(
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedObject as CachedObject;
+use Philasearch\Cache\Objects\CachedObject;
 
 $object = new CachedObject('cache_key');
 ```
@@ -57,7 +57,7 @@ $object = new CachedObject('cache_key');
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedObject as CachedObject;
+use Philasearch\Cache\Objects\CachedObject;
 
 class Extended extends CachedObject
 {
@@ -74,7 +74,7 @@ $object = new Extended('foo');
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedObject as CachedObject;
+use Philasearch\Cache\Objects\CachedObject;
 
 $object = new CachedObject('cache_key');
 
@@ -100,7 +100,7 @@ To prevent overwriting of data with multiple objects, you can namespace your obj
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedObject as CachedObject;
+use Philasearch\Cache\Objects\CachedObject;
 
 $object = new CachedObject('cache_key', ['namespace' => 'foo']);
 ```
@@ -110,7 +110,7 @@ $object = new CachedObject('cache_key', ['namespace' => 'foo']);
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedObject as CachedObject;
+use Philasearch\Cache\Objects\CachedObject;
 
 class NamespaceClass extends CachedObject
 {
@@ -132,9 +132,9 @@ $object = new NamespaceClass('cache_key');
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 ```
 
 ### Making a Root Node
@@ -142,9 +142,9 @@ $tree = new Tree('cached_key');
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 
 $root = $tree->makeRootNode(1);
 
@@ -157,9 +157,9 @@ $root = $tree->makeRootNode(1, ['foo' => 'bar']);
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 
 $root = $tree->makeRootNode(1);
 
@@ -171,9 +171,9 @@ $root->foo = 'bar';
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 
 $root = $tree->makeRootNode(1);
 
@@ -189,9 +189,9 @@ $node = $root->addChild(2, ['foo' => 'bar']);
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 $root = $tree->makeRootNode(1);
 $node = $root->addChild(2)
 
@@ -203,9 +203,9 @@ $tree->save();
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 $root = $tree->makeRootNode(1);
 $node = $root->addChild(2)
 
@@ -225,9 +225,9 @@ A tree that has been saved can also be retrieved at a later point with the tree'
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree as Tree;
+use Philasearch\Cache\Objects\CachedTree;
 
-$tree = new Tree('cached_key');
+$tree = new CachedTree('cached_key');
 $root = $tree->makeRootNode(1);
 $node = $root->addChild(2)
 

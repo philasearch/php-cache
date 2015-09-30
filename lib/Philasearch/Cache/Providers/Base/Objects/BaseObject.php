@@ -23,15 +23,15 @@ interface BaseObject
      * Creates a cached object
      *
      * @param $key
-     *
      * @param array $data
+     * @param int $expire
      */
     public function __construct ( $key, array $data=[], $expire=0 );
 
     /**
      * Expires the object after a set time
      *
-     * @param interger  $time   The time to expire
+     * @param integer  $expire   The time to expire
      */
     public function expire ( $expire );
 

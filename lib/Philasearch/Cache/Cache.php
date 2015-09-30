@@ -9,7 +9,7 @@
 
 namespace Philasearch\Cache;
 
-use Philasearch\Cache\Providers\Redis\Client as RedisClient;
+use Philasearch\Cache\Providers\Redis\RedisClient as RedisClient;
 use Philasearch\Cache\Providers\Redis\Objects\Object as RedisObject;
 use Philasearch\Cache\Providers\Redis\Objects\Tree as RedisTree;
 
@@ -29,7 +29,8 @@ class Cache
      * Sets up the cache
      *
      * @param $type
-     * @param array $cache_config
+     * @param null $cacheConfig
+     * @param array $cacheOptions
      */
     public static function setup ( $type, $cacheConfig=null, $cacheOptions=[] )
     {
@@ -60,6 +61,9 @@ class Cache
      * @param   $key
      * @param   $type
      *
+     * @param array $data
+     * @param int $expire
+     *
      * @return null|RedisObject
      */
     public static function object ( $key, $type, $data=[], $expire=0 )
@@ -76,6 +80,23 @@ class Cache
                 }
                 break;
         }
+        return null;
+    }
+
+    /**
+     * Returns a client
+     *
+     * @return null|RedisClient
+     */
+    public static function getClient ()
+    {
+        switch ( self::$currentCache )
+        {
+            case CacheProviders::REDIS:
+                return new RedisClient();
+                break;
+        }
+
         return null;
     }
 }

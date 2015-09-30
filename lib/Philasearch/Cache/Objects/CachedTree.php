@@ -10,8 +10,8 @@
 namespace Philasearch\Cache\Objects;
 
 use Philasearch\Cache\Cache;
-use Philasearch\Cache\Providers\Base\Objects\BaseTree as BaseTree;
 use Philasearch\Cache\ObjectType;
+use Philasearch\Cache\Providers\Base\Objects\BaseTree;
 
 /**
  * Class CachedTree
@@ -24,28 +24,40 @@ use Philasearch\Cache\ObjectType;
 
 class CachedTree
 {
-    private     $base       = null;
-    protected   $namespace  = "";
-    protected   $key        = "";
+    /**
+     * @var BaseTree
+     */
+    private $base;
+
+    /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
+     * @var string
+     */
+    protected $key;
 
     /**
      * Constructs the Cached Object
      *
-     * @param       $key
-     * @param array $opts
+     * @param string $key
+     * @param string $namespace
+     * @param BaseTree $base
      */
-    public function __construct ($key, array $opts=[])
+    public function __construct ( $key, $namespace = '', BaseTree $base = null )
     {
-        $this->namespace    = (array_key_exists('namespace', $opts))    ? $opts['namespace']            : $this->namespace;
-        $this->key          = ($this->namespace != "")                  ? $this->namespace . ':' . $key : $key;
-        $this->base         = (array_key_exists('base', $opts))         ? $opts['base']                 : Cache::object($this->key, ObjectType::TREE);
+        $this->namespace = $namespace;
+        $this->key = ( $namespace != '' ) ? "{$namespace}:{$namespace}" : $key;
+        $this->base = ( $base != null ) ? $base : Cache::object( $this->key, ObjectType::TREE );
     }
 
     /**
      * Saves the tree
      *
      */
-    public function save()
+    public function save ()
     {
         $this->base->save();
     }
@@ -59,7 +71,7 @@ class CachedTree
      * @return mixed
      *
      */
-    public function cacheNodeAddress($id, $address)
+    public function cacheNodeAddress ( $id, $address )
     {
         $this->base->cacheNodeAddress($id, $address);
     }
@@ -72,7 +84,7 @@ class CachedTree
      *
      * @return mixed
      */
-    public function makeRootNode($id, $data=[])
+    public function makeRootNode ( $id, $data=[] )
     {
         return $this->base->makeRootNode($id, $data);
     }
@@ -85,7 +97,7 @@ class CachedTree
      * @return mixed
      *
      */
-    public function getData($id=null)
+    public function getData ( $id=null )
     {
         return $this->base->getData($id);
     }
@@ -108,7 +120,7 @@ class CachedTree
      * @return mixed
      *
      */
-    public function branch($id)
+    public function branch ( $id )
     {
         return $this->base->branch($id);
     }

@@ -17,14 +17,14 @@ namespace Philasearch\Cache\Providers\Base\Objects;
  * @package Philasearch\Cache\Providers\Base\Objects
  *
  */
-interface CachedArray {
-
+interface CachedArray
+{
     /**
      * Constructs the array with the cache key
      *
      * @param $key
      */
-    public function __construct($key);
+    public function __construct ( $key );
 
     /**
      * Adds an object to the array
@@ -33,7 +33,7 @@ interface CachedArray {
      *
      * @return mixed
      */
-    public function add($object);
+    public function add ( $object );
 
     /**
      * Removes an element from the array
@@ -41,13 +41,13 @@ interface CachedArray {
      *
      * @return mixed
      */
-    public function remove($object);
+    public function remove ( $object );
 
     /**
      * Returns the objects of the array
      *
      * @return mixed
      */
-    public function objects();
+    public function objects ();
 
 }

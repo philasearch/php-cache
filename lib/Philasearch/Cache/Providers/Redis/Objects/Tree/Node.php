@@ -9,7 +9,7 @@
 
 namespace Philasearch\Cache\Providers\Redis\Objects\Tree;
 
-use Philasearch\Cache\Providers\Redis\Objects\Tree as Tree;
+use Philasearch\Cache\Providers\Redis\Objects\Tree;
 
 /**
  * Class Node
@@ -21,11 +21,30 @@ use Philasearch\Cache\Providers\Redis\Objects\Tree as Tree;
  */
 class Node
 {
-    private $id         = null;
-    private $data       = null;
-    private $tree       = null;
-    private $address    = [];
-    private $children   = [];
+    /**
+     * @var string
+     */
+    private $id;
+
+    /**
+     * @var array
+     */
+    private $data;
+
+    /**
+     * @var Tree
+     */
+    private $tree;
+
+    /**
+     * @var array
+     */
+    private $address;
+
+    /**
+     * @var array
+     */
+    private $children;
 
     /**
      * Constructs the node
@@ -35,27 +54,30 @@ class Node
      * @param array $data
      *
      */
-    public function __construct($id, Tree $tree=null, $data=[])
+    public function __construct ( $id, Tree $tree=null, $data=[] )
     {
         $this->data         = $data;
         $this->data['id']   = $id;
         $this->address      = [0];
         $this->id           = $id;
         $this->tree         = $tree;
+        $this->children     = [];
     }
 
     /**
      * Gets the node data
      *
      * @return array|null
-     *
      */
-    public function getData()
+    public function getData ()
     {
         $data = $this->data;
 
-        foreach ($this->children as $child)
+        foreach ( $this->children as $child )
         {
+            /**
+             * @var $child Node
+             */
             $data['children'][] = $child->getData();
         }
 
@@ -67,9 +89,8 @@ class Node
      *
      * @param $field
      * @param $value
-     *
      */
-    public function __set($field, $value)
+    public function __set ( $field, $value )
     {
         $this->data[$field] = $value;
     }
@@ -80,9 +101,8 @@ class Node
      * @param $field
      *
      * @return mixed
-     *
      */
-    public function __get($field)
+    public function __get ( $field )
     {
         return $this->data[$field];
     }
@@ -90,8 +110,13 @@ class Node
     /**
      * Adds a child to the node
      *
+     * @param string $id
+     * @param array $data
+     * @param bool $saveToCache
+     *
+     * @return Node
      */
-    public function addChild($id, $data=[], $saveToCache=true)
+    public function addChild ( $id, $data=[], $saveToCache=true )
     {
         $child      = new Node($id, $this->tree, $data);
         $address    = $this->address;
@@ -109,9 +134,9 @@ class Node
      * Sets a node address
      *
      * @param $address
-     *
+     * @param bool $saveToCache
      */
-    public function setAddress($address, $saveToCache=true)
+    public function setAddress ( $address, $saveToCache=true )
     {
         $this->address = $address;
 
@@ -125,7 +150,7 @@ class Node
      * @return array
      *
      */
-    public function getAddress()
+    public function getAddress ()
     {
         return $this->address;
     }
@@ -135,14 +160,13 @@ class Node
      *
      * @return array
      */
-    public function getChildren()
+    public function getChildren ()
     {
         return $this->children;
     }
 
     /**
      * Resumes a node
-     *
      */
     public function resume ()
     {
@@ -153,7 +177,7 @@ class Node
 
             foreach ($children as $child_cache)
             {
-                $child = $this->addChild($child_cache['id'],$child_cache,false);
+                $this->addChild($child_cache['id'],$child_cache,false);
             }
         }
     }

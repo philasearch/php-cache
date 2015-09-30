@@ -10,5 +10,4 @@ class CacheTest extends TestCase
 
         $this->assertEquals(\Philasearch\Cache\CacheProviders::REDIS, Cache::currentCache());
     }
-
 }

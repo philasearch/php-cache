@@ -4,67 +4,64 @@ use Philasearch\Cache\Objects\CachedObject;
 
 class CachedObjectTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var CachedObject
+     */
+    private $cachedObject;
+
+    /**
+     * @var string
+     */
+    private $key;
+
+    public function setUp ()
+    {
+        parent::setUp();
+
+        $this->key = 'key';
+        $this->cachedObject = new CachedObject($this->key);
+        $this->cachedObject->deleteAll();
+    }
 
     public function testFillingInObject ()
     {
-        $base   = $this->base();
-        $obj    = new CachedObject('key', ['base' => $base]);
+        $this->cachedObject->fill(['foo' => 'bar', 'bar' => 'foo']);
 
-        $base->shouldReceive('fill')->once();
-        $base->shouldReceive('get')->once()->andReturn('bar');
-
-        $obj->fill(['foo' => 'bar', 'bar' => array('bar'=> array('foo' => 'bar'))]);
-        $this->assertEquals('bar', $obj->foo);
+        $this->assertEquals('bar', $this->cachedObject->foo);
     }
 
     public function testSettingFieldForObject()
     {
-        $base   = $this->base();
-        $obj    = new CachedObject('key', ['base' => $base]);
+        $this->cachedObject->foo = 'bar';
 
-        $base->shouldReceive('get')->once()->andReturn('bar');
-        $base->shouldReceive('set')->once();
-
-        $obj->foo = 'bar';
-        $this->assertEquals('bar', $obj->foo);
+        $this->assertEquals('bar', $this->cachedObject->foo);
     }
 
     public function testGetAll()
     {
-        $base   = $this->base();
-        $obj    = new CachedObject('key', ['base' => $base]);
+        $this->cachedObject->fill(['foo' => 'bar']);
 
-        $base->shouldReceive('getAll')->once()->andReturn(['foo' => 'bar']);
-        $base->shouldReceive('fill')->once();
-
-        $obj->fill(['foo' => 'bar']);
-
-        $this->assertEquals(['foo' => 'bar'], $obj->getAll());
+        $this->assertEquals(['foo' => 'bar'], $this->cachedObject->getAll());
     }
 
     public function testDelete ()
     {
-        $base   = $this->base();
-        $obj    = new CachedObject('key', ['base' => $base]);
+        $this->cachedObject->fill(['foo' => 'bar']);
+        $this->assertEquals(['foo' => 'bar'], $this->cachedObject->getAll());
+        $this->cachedObject->delete('foo');
 
-        $base->shouldReceive('delete')->once();
-
-        $obj->delete('foo');
+        $this->cachedObject = new CachedObject( $this->key );
+        $this->assertEquals([], $this->cachedObject->getAll());
     }
 
     public function testDeleteAll ()
     {
-        $base   = $this->base();
-        $obj    = new CachedObject('key', ['base' => $base]);
+        $this->cachedObject->fill(['foo' => 'bar', 'bar' => 'foo']);
+        $this->assertEquals(['foo' => 'bar', 'bar' => 'foo'], $this->cachedObject->getAll());
+        $this->cachedObject->deleteAll();
 
-        $base->shouldReceive('deleteAll')->once();
-
-        $obj->deleteAll();
-    }
-
-    private function base()
-    {
-        return \Mockery::mock('\Philasearch\Cache\Providers\BaseObject');
+        $this->cachedObject = new CachedObject( $this->key );
+        $this->assertEquals([], $this->cachedObject->getAll());
     }
 }
 

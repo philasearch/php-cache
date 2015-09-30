@@ -11,8 +11,8 @@ namespace Philasearch\Cache\Providers\Redis\Objects;
 
 use Philasearch\Cache\Providers\Base\Objects\BaseTree;
 use Philasearch\Cache\Providers\Redis\Objects\Tree\AddressBook;
-use Philasearch\Cache\Providers\Redis\Objects\Tree\Node as Node;
-use Philasearch\Cache\Providers\Redis\Client as RedisClient;
+use Philasearch\Cache\Providers\Redis\Objects\Tree\Node;
+use Philasearch\Cache\Providers\Redis\RedisClient;
 
 /**
  * Class Tree
@@ -24,9 +24,30 @@ use Philasearch\Cache\Providers\Redis\Client as RedisClient;
  */
 class Tree implements BaseTree
 {
-    private $key     = "";
-    private $root    = null;
-    private $data    = null;
+    /**
+     * @var string
+     */
+    private $key;
+
+    /**
+     * @var Node
+     */
+    private $root;
+
+    /**
+     * @var array
+     */
+    private $data;
+
+    /**
+     * @var RedisClient
+     */
+    private $client;
+
+    /**
+     * @var AddressBook
+     */
+    private $addressBook;
 
     /**
      * Constructs the tree
@@ -34,9 +55,12 @@ class Tree implements BaseTree
      * @param $key
      *
      */
-    public function __construct($key)
+    public function __construct ( $key )
     {
         $this->key = $key;
+
+        $this->client = new RedisClient();
+        $this->addressBook = new AddressBook();
 
         $this->resume();
     }
@@ -50,7 +74,7 @@ class Tree implements BaseTree
         $this->data = [$this->root->getData()];
         $cache      = json_encode($this->data);
 
-        RedisClient::set($this->key, $cache);
+        $this->client->set($this->key, $cache);
 
         return $this->data;
     }
@@ -66,7 +90,7 @@ class Tree implements BaseTree
      */
     public function cacheNodeAddress($id, $address)
     {
-        AddressBook::add($this->addressBookKey(), $id, $address);
+        $this->addressBook->add($this->addressBookKey(), $id, $address);
     }
 
     /**
@@ -96,7 +120,7 @@ class Tree implements BaseTree
      */
     public function getData($id=null)
     {
-        $address = ($id == null) ? $this->root->getAddress() : AddressBook::get($this->addressBookKey(), $id);
+        $address = ($id == null) ? $this->root->getAddress() : $this->addressBook->get($this->addressBookKey(), $id);
 
         return $this->getNodeBranch($address);
     }
@@ -158,7 +182,7 @@ class Tree implements BaseTree
             return $this->data;
         }
 
-        $cache = RedisClient::get($this->key);
+        $cache = $this->client->get($this->key);
 
         if ($cache == null && $this->root != null)
         {

@@ -1,7 +1,6 @@
 <?php
 
 use Philasearch\Cache\Providers\Redis\Objects\Tree as Tree;
-use Philasearch\Cache\Providers\Redis\Client as Client;
 
 class TreeTest extends TestCase
 {
@@ -21,7 +20,7 @@ class TreeTest extends TestCase
 
         $this->assertNotNull($root);
         $this->assertEquals([0], $root->getAddress());;
-        $this->assertEquals([0], Tree\AddressBook::get('key:addresses', "id"));
+        $this->assertEquals([0], $this->addressBook->get('key:addresses', "id"));
     }
 
     public function testIsEmpty ()
@@ -143,7 +142,7 @@ class TreeTest extends TestCase
 
         $expect = json_encode($array);
 
-        $this->assertEquals($expect, Client::get('tree'));
+        $this->assertEquals($expect, $this->client->get('tree'));
     }
 
     public function testTreeResume()

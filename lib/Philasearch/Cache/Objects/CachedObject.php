@@ -10,8 +10,8 @@
 namespace Philasearch\Cache\Objects;
 
 use Philasearch\Cache\Cache;
-use Philasearch\Cache\Providers\Base\Objects\BaseObject as BaseObject;
 use Philasearch\Cache\ObjectType;
+use Philasearch\Cache\Providers\Base\Objects\BaseObject;
 
 /**
  * Class CachedObject
@@ -23,34 +23,45 @@ use Philasearch\Cache\ObjectType;
  */
 class CachedObject
 {
-    private     $base       = null;
-    protected   $namespace  = "";
-    protected   $key        = "";
+    /**
+     * @var Object
+     */
+    private $base;
+
+    /**
+     * @var string
+     */
+    protected $namespace = "";
+
+    /**
+     * @var string
+     */
+    protected $key = "";
 
     /**
      * Constructs the Cached Object
      *
-     * @param       $key
-     * @param array $opts
+     * @param string $key
+     * @param string $namespace
+     * @param BaseObject $base
+     * @param int $expire
+     * @param array $data
      */
-    public function __construct ( $key, array $opts=[] )
+    public function __construct ( $key, $namespace='', BaseObject $base = null, $expire=0, $data=[])
     {
-        $this->namespace    = (array_key_exists('namespace', $opts))    ? $opts['namespace']            : $this->namespace;
-        $this->key          = ($this->namespace != "")                  ? $this->namespace . ':' . $key : $key;
-
-        $expire     = (array_key_exists('exipre', $opts))   ? $opts['expire']   : 0;
-        $data       = (array_key_exists('data', $opts))     ? $opts['data']     : [];
-        $this->base = (array_key_exists('base', $opts))     ? $opts['base']     : Cache::object($this->key, ObjectType::OBJECT, $data, $expire);
+        $this->namespace = $namespace;
+        $this->key = ( $namespace != '' ) ? "{$namespace}:{$key}" : $key;
+        $this->base = ( $base != null ) ? $base : Cache::object($this->key, ObjectType::OBJECT, $data, $expire);
     }
 
     /**
      * Expires an object from the cache
      *
-     * @param string    $exire  The time until expire
+     * @param string $expire The time until expire
      */
     public function expire ( $expire )
     {
-        return $this->base->expire( $expire );
+        $this->base->expire( $expire );
     }
 
     /**
@@ -131,7 +142,6 @@ class CachedObject
 
     /**
      * Deletes all the fields from the object
-     *
      */
     public function deleteAll ()
     {
