@@ -6,6 +6,7 @@ before_install:
   - composer install
 services:
   - redis-server
+sudo: false
 notifications:
   email:
     recipients:
