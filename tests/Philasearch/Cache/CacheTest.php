@@ -38,6 +38,6 @@ class CacheTest extends TestCase
     {
         $client = $this->cache->getClient();
         $this->assertNotNull($client);
-        $this->assertEquals(RedisClient::class, get_class($client));
+        $this->assertEquals(get_class(new RedisClient()), get_class($client));
     }
 }
