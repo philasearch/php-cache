@@ -99,8 +99,8 @@ $node = $root->addChild(2, ['foo' => 'bar']);
 $tree->save();
 
 // turns the tree to an array starting from root
-$tree->getData();
+$tree->getArray();
 
 // turns the tree to an array starting at the child with the id of 2
-$tree->getData(2);
+$tree->getArray(2);
 ```
