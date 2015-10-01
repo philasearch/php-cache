@@ -85,7 +85,11 @@ use Philasearch\Cache\CacheProviders;
 
 $cache = new Cache();
 
+// a basic tree
 $tree = $cache->createTree('cached_key');
+
+// a tree that expires after 10 seconds
+$tree = $cache->createTree('cached_key', 10);
 
 // a root node with the id of 1 ('the id can also be a string')
 $root = $tree->makeRootNode(1);

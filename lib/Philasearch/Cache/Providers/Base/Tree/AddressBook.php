@@ -27,35 +27,44 @@ class AddressBook
     private $client;
 
     /**
-     * @param $client BaseClient
+     * @var string
      */
-    public function __construct ( $client )
+    private $key;
+
+    /**
+     * @param     $client BaseClient
+     * @param     $key
+     * @param int $expire
+     */
+    public function __construct ( $client, $key, $expire=0 )
     {
         $this->client = $client;
+        $this->key = $key;
+
+        if ( $expire != 0 )
+            $this->client->expire($key, $expire);
     }
 
     /**
      * Adds an address to the address book
      *
-     * @param       $key
      * @param       $id
      * @param array $address
      */
-    public function add ( $key, $id, array $address = [] )
+    public function add ( $id, array $address = [] )
     {
-        $this->client->setHashValue($key, $id, json_encode($address));
+        $this->client->setHashValue($this->key, $id, json_encode($address));
     }
 
     /**
      * Gets an address from the address book
      *
-     * @param $key
      * @param $id
      *
      * @return mixed
      */
-    public function get ( $key, $id )
+    public function get ( $id )
     {
-        return json_decode($this->client->getHashValue($key, $id), false);
+        return json_decode($this->client->getHashValue($this->key, $id), false);
     }
 }

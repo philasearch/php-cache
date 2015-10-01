@@ -53,14 +53,21 @@ class RedisTree implements BaseTree
      * Constructs the tree
      *
      * @param $key
-     *
+     * @param $expire
      */
-    public function __construct ( $key )
+    public function __construct ( $key, $expire=0 )
     {
         $this->key = $key;
 
+        $addressBookKey = $this->key . ":addresses";
+
         $this->client = new RedisClient();
-        $this->addressBook = new AddressBook( $this->client );
+        $this->addressBook = new AddressBook($this->client, $addressBookKey, $expire);
+
+        if ( $expire != 0 )
+        {
+            $this->client->expire($key, $expire);
+        }
 
         $this->resume();
     }
@@ -88,7 +95,7 @@ class RedisTree implements BaseTree
      */
     public function cacheNodeAddress ( $id, $address )
     {
-        $this->addressBook->add($this->addressBookKey(), $id, $address);
+        $this->addressBook->add($id, $address);
     }
 
     /**
@@ -118,7 +125,7 @@ class RedisTree implements BaseTree
      */
     public function toArray ( $id = null )
     {
-        $address = ($id == null) ? $this->root->getAddress() : $this->addressBook->get($this->addressBookKey(), $id);
+        $address = ($id == null) ? $this->root->getAddress() : $this->addressBook->get($id);
 
         return $this->getNodeBranch($address);
     }
@@ -208,16 +215,6 @@ class RedisTree implements BaseTree
     public function isEmpty ()
     {
         return ($this->getCachedData() == null);
-    }
-
-    /**
-     * Returns the address book key
-     *
-     * @return string
-     */
-    private function addressBookKey ()
-    {
-        return $this->key . ":addresses";
     }
 
     /**

@@ -20,7 +20,6 @@ class TreeTest extends TestCase
 
         $this->assertNotNull($root);
         $this->assertEquals([0], $root->getAddress());;
-        $this->assertEquals([0], $this->addressBook->get('key:addresses', "id"));
     }
 
     public function testIsEmpty ()
