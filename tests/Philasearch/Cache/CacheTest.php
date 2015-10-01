@@ -25,14 +25,14 @@ class CacheTest extends TestCase
     {
         $object = $this->cache->createObject('foo');
         $this->assertNotNull($object);
-        $this->assertEquals(RedisObject::class, get_class($object));
+        $this->assertEquals(get_class(new RedisObject('bar')), get_class($object));
     }
 
     public function testGetTree ()
     {
         $tree = $this->cache->createTree('foo');
         $this->assertNotNull($tree);
-        $this->assertEquals(RedisTree::class, get_class($tree));
+        $this->assertEquals(get_class(new RedisTree('bar')), get_class($tree));
     }
 
     public function testGetClient ()
