@@ -20,7 +20,7 @@ Add the following to your composer.json
 
 ## Setup
 
-**Notice:** *Currently, only a redis cache is supported.*
+**Notice:** *I built this library agnostic to different cache providers, however, since I mainly use redis, redis is the only supported cache.*
 
 ```php
 <?php
@@ -40,9 +40,29 @@ Cache::setup(
 
 ## Using Cached Objects
 
-### Creating an Object
+A cached object is a PHP object that has its values stored in the cache for easy storage and retrieval. In redis, this
+is done through the hash data type. When you recreate the object with the correct cache key, the object will be automatically
+resumed to its previous state.
 
-#### Method 1: Using CachedObject
+```php
+<?php
+
+use Philasearch\Cache\Objects\CachedObject;
+
+// a basic cached object
+$object = new CachedObject('cache_key'); 
+
+// a cached object that is put in the namespace foo ("foo:cache_key")
+$object = new CachedObject('cache_key', 'foo');
+
+// a cached object that expires in 10 seconds
+$object = new CachedObject('cache_key', '', 10);
+
+// a cached object with a value foo that equals bar.
+$object = new CachedObject('cache_key', '', 0, ['foo' => 'bar']);
+```
+
+This object will have a few methods for setting and getting variable.
 
 ```php
 <?php
@@ -50,92 +70,21 @@ Cache::setup(
 use Philasearch\Cache\Objects\CachedObject;
 
 $object = new CachedObject('cache_key');
-```
 
-#### Method 2: Extending CachedObject
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedObject;
-
-class Extended extends CachedObject
-{
-    public function __construct($key, array $opts=[])
-    {
-        parent::__construct($key, $opts);
-    }
-}
-
-$object = new Extended('foo');
-```
-
-### Variables
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedObject;
-
-$object = new CachedObject('cache_key');
-
-# fill method
+// filling the object with an array of variables
 $object->fill(['foo' => 'bar']);
 
-# set methods
+// setting a variable directly
 $object->set('foo', 'bar');
 
-# get methods
+// getting a variable
 $foo = $object->get('foo');
 ```
 
-### Namespaces
+## Using Cached Trees
 
-To prevent overwriting of data with multiple objects, you can namespace your objects.  Namespacing will make your cache key
-`namespace:cache_key` instead of just `cache_key`.
-
-#### Method 1: Adding the Namespace to the Object During Creation
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedObject;
-
-$object = new CachedObject('cache_key', ['namespace' => 'foo']);
-```
-
-#### Method 2: Adding the Namespace to a Class Extending CachedObject
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedObject;
-
-class NamespaceClass extends CachedObject
-{
-    protected $namespace = 'foo';
-
-    public function __construct($key, array $opts=[])
-    {
-        parent::__construct($key, $opts);
-    }
-}
-
-$object = new NamespaceClass('cache_key');
-```
-
-## Using Trees
-
-### Creating a Tree
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedTree;
-
-$tree = new CachedTree('cached_key');
-```
-
-### Making a Root Node
+Cached trees are a way of having tree objects stored in the cache. These trees are also automatically resumed to the 
+previous state if created with the same key.
 
 ```php
 <?php
@@ -144,92 +93,30 @@ use Philasearch\Cache\Objects\CachedTree;
 
 $tree = new CachedTree('cached_key');
 
+// a root node with the id of 1 ('the id can also be a string')
 $root = $tree->makeRootNode(1);
 
-# You can also pass data to the root node during creation
+// a root node with the id of 1 and a value of foo that equals bar
 $root = $tree->makeRootNode(1, ['foo' => 'bar']);
-```
 
-### Passing Data to a node
+// set the value foo to bar
+$root->set('foo', 'bar');
 
-```php
-<?php
+// get the value stored under bar
+$root->get('foo');
 
-use Philasearch\Cache\Objects\CachedTree;
+// add a new child
+$node = $root->addChild(2);
 
-$tree = new CachedTree('cached_key');
-
-$root = $tree->makeRootNode(1);
-
-$root->foo = 'bar';
-```
-
-### Adding a Child to the Root Node
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedTree;
-
-$tree = new CachedTree('cached_key');
-
-$root = $tree->makeRootNode(1);
-
-# Make the new node with its id as its argument
-$node = $root->addChild(2)
-
-# You can also pass data to the node during creation
+// add a new child with the value foo equaling bar
 $node = $root->addChild(2, ['foo' => 'bar']);
-```
 
-### Saving the Tree
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedTree;
-
-$tree = new CachedTree('cached_key');
-$root = $tree->makeRootNode(1);
-$node = $root->addChild(2)
-
-$tree->save();
-```
-
-### Getting the Data from the Tree
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedTree;
-
-$tree = new CachedTree('cached_key');
-$root = $tree->makeRootNode(1);
-$node = $root->addChild(2)
-
+// saving the tree
 $tree->save();
 
-# Starting from the root node
+// get all the node data under the root
 $tree->getData();
 
-# Starting from a set node (by ID)
-$tree->getData(1);
-```
-
-### Retrieving a Tree
-
-A tree that has been saved can also be retrieved at a later point with the tree'S cache key
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedTree;
-
-$tree = new CachedTree('cached_key');
-$root = $tree->makeRootNode(1);
-$node = $root->addChild(2)
-
-$tree->save();
-
-$tree = new Tree('cached_key');
+// get all the node data starting from the id 2
+$tree->getData(2);
 ```

@@ -187,7 +187,7 @@ class Node
 
             foreach ($children as $child_cache)
             {
-                $this->addChild($child_cache['id'],$child_cache,false);
+                $this->addChild($child_cache['id'], $child_cache, false);
             }
         }
     }

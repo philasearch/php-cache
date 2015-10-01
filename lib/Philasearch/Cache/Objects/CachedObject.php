@@ -43,11 +43,11 @@ class CachedObject
      *
      * @param string $key
      * @param string $namespace
-     * @param BaseObject $base
      * @param int $expire
      * @param array $data
+     * @param BaseObject $base
      */
-    public function __construct ( $key, $namespace='', BaseObject $base = null, $expire=0, $data=[])
+    public function __construct ( $key, $namespace='', $expire=0, $data=[], BaseObject $base = null )
     {
         $this->namespace = $namespace;
         $this->key = ( $namespace != '' ) ? "{$namespace}:{$key}" : $key;
