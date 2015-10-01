@@ -20,13 +20,6 @@ namespace Philasearch\Cache\Providers\Base\Objects;
 interface BaseTree
 {
     /**
-     * Constructs the tree
-     * @param $key
-     *
-     */
-    public function __construct ($key);
-
-    /**
      * Saves the tree
      *
      * @return mixed

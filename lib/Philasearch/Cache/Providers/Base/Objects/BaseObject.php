@@ -20,15 +20,6 @@ namespace Philasearch\Cache\Providers\Base\Objects;
 interface BaseObject
 {
     /**
-     * Creates a cached object
-     *
-     * @param $key
-     * @param array $data
-     * @param int $expire
-     */
-    public function __construct ( $key, array $data=[], $expire=0 );
-
-    /**
      * Expires the object after a set time
      *
      * @param integer  $expire   The time to expire

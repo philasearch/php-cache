@@ -20,13 +20,6 @@ namespace Philasearch\Cache\Providers\Base\Objects;
 interface CachedArray
 {
     /**
-     * Constructs the array with the cache key
-     *
-     * @param $key
-     */
-    public function __construct ( $key );
-
-    /**
      * Adds an object to the array
      *
      * @param $object
