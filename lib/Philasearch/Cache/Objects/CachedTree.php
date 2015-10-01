@@ -88,16 +88,18 @@ class CachedTree
     }
 
     /**
-     * Gets data from the tree based on tree id
+     * Returns an array of the tree's data from the
+     * specified id. If the id is null, the array starts
+     * at the root.
      *
-     * @param null $id
+     * @param string $id
      *
      * @return mixed
      *
      */
-    public function getData ( $id=null )
+    public function toArray ( $id=null )
     {
-        return $this->base->getData($id);
+        return $this->base->toArray($id);
     }
 
     /**

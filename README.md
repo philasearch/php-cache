@@ -101,9 +101,9 @@ $node = $root->addChild(2, ['foo' => 'bar']);
 // saving the tree
 $tree->save();
 
-// get all the node data under the root
+// turns the tree to an array starting from root
 $tree->getData();
 
-// get all the node data starting from the id 2
+// turns the tree to an array starting at the child with the id of 2
 $tree->getData(2);
 ```

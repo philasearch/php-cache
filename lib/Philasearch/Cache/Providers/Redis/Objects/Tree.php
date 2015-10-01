@@ -67,12 +67,11 @@ class Tree implements BaseTree
 
     /**
      * Saves the tree in the cache
-     *
      */
-    public function save()
+    public function save ()
     {
-        $this->data = [$this->root->getData()];
-        $cache      = json_encode($this->data);
+        $this->data = [ $this->root->getData() ];
+        $cache = json_encode($this->data);
 
         $this->client->set($this->key, $cache);
 
@@ -86,9 +85,8 @@ class Tree implements BaseTree
      * @param $address
      *
      * @return mixed|void
-     *
      */
-    public function cacheNodeAddress($id, $address)
+    public function cacheNodeAddress ( $id, $address )
     {
         $this->addressBook->add($this->addressBookKey(), $id, $address);
     }
@@ -96,29 +94,29 @@ class Tree implements BaseTree
     /**
      * Makes a root node
      *
-     * @param $id
+     * @param       $id
      * @param array $data
      *
      * @return Node
-     *
      */
-    public function makeRootNode($id,$data=[])
+    public function makeRootNode ( $id, $data = [ ] )
     {
         $this->root = new Node($id, $this, $data);
-        $this->root->setAddress([0]);
+        $this->root->setAddress([ 0 ]);
 
         return $this->root;
     }
 
     /**
-     * Gets the data for the tree
+     * Returns an array of the tree's data from the
+     * specified id. If the id is null, the array starts
+     * at the root.
      *
-     * @param null $id
+     * @param string $id
      *
      * @return array|mixed|null
-     *
      */
-    public function getData($id=null)
+    public function toArray ( $id = null )
     {
         $address = ($id == null) ? $this->root->getAddress() : $this->addressBook->get($this->addressBookKey(), $id);
 
@@ -131,16 +129,15 @@ class Tree implements BaseTree
      * @param $id
      *
      * @return array
-     *
      */
-    public function branch($id)
+    public function branch ( $id )
     {
-        $nodes  = $this->getData($id);
-        $ids    = [$nodes['id']];
+        $nodes = $this->toArray($id);
+        $ids = [ $nodes['id'] ];
 
-        if (array_key_exists('children', $nodes))
+        if ( array_key_exists('children', $nodes) )
         {
-            foreach ($nodes['children'] as $child)
+            foreach ( $nodes['children'] as $child )
             {
                 $child_ids = $this->branch($child['id']);
                 $ids = array_merge($ids, $child_ids);
@@ -152,16 +149,16 @@ class Tree implements BaseTree
 
     /**
      * Gets a node branch from the tree
+     *
      * @param $address
      *
      * @return array|mixed|null
-     *
      */
-    private function getNodeBranch($address)
+    private function getNodeBranch ( $address )
     {
         $data = $this->getCachedData();
 
-        foreach ($address as $key)
+        foreach ( $address as $key )
         {
             $data = array_key_exists('children', $data) ? $data['children'][$key] : $data[$key];
         }
@@ -173,18 +170,17 @@ class Tree implements BaseTree
      * Gets the cached data
      *
      * @return array|mixed|null
-     *
      */
-    private function getCachedData()
+    private function getCachedData ()
     {
-        if ($this->data != null)
+        if ( $this->data != null )
         {
             return $this->data;
         }
 
         $cache = $this->client->get($this->key);
 
-        if ($cache == null && $this->root != null)
+        if ( $cache == null && $this->root != null )
         {
             return $this->save();
         }
@@ -220,20 +216,19 @@ class Tree implements BaseTree
      * @return string
      *
      */
-    private function addressBookKey()
+    private function addressBookKey ()
     {
         return $this->key . ":addresses";
     }
 
     /**
-     * Resumes a tree
-     *
+     * Resumes a tree back to its previous state
      */
-    private function resume()
+    private function resume ()
     {
         $cache = $this->getCachedData();
 
-        if ($cache != null)
+        if ( $cache != null )
         {
             $this->root = new Node($cache[0]['id'], $this, $cache[0]);
             $this->root->resume();
