@@ -13,7 +13,7 @@ Add the following to your composer.json
 ```json
 {
     "require": {
-        "philasearch/cache": "~1.1.0"
+        "philasearch/cache": "~1.1.1"
     }
 }
 ```
