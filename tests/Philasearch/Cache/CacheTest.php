@@ -2,7 +2,6 @@
 
 use Philasearch\Cache\Cache;
 use Philasearch\Cache\CacheProviders;
-use Philasearch\Cache\ObjectType;
 use Philasearch\Cache\Providers\Redis\Objects\RedisObject;
 use Philasearch\Cache\Providers\Redis\Objects\RedisTree;
 use Philasearch\Cache\Providers\Redis\RedisClient;

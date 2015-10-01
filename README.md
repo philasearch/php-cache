@@ -28,6 +28,10 @@ Add the following to your composer.json
 use Philasearch\Cache\Cache;
 use Philasearch\Cache\CacheProviders;
 
+// a redis cache at localhost and database of 0
+$cache = new Cache ();
+
+// a more specified cache
 $cache = new Cache( CacheProviders::REDIS, [
     'scheme'    => 'tcp',
     'host'      => 'localhost',
@@ -47,11 +51,7 @@ resumed to its previous state.
 use Philasearch\Cache\Cache;
 use Philasearch\Cache\CacheProviders;
 
-$cache = new Cache( CacheProviders::REDIS, [
-    'scheme'    => 'tcp',
-    'host'      => 'localhost',
-    'database'  => 0
-]);
+$cache = new Cache();
 
 // a basic cached object
 $object = $cache->createObject('cache_key'); 
@@ -83,11 +83,7 @@ previous state if created with the same key.
 use Philasearch\Cache\Cache;
 use Philasearch\Cache\CacheProviders;
 
-$cache = new Cache( CacheProviders::REDIS, [
-    'scheme'    => 'tcp',
-    'host'      => 'localhost',
-    'database'  => 0
-]);
+$cache = new Cache();
 
 $tree = $cache->createTree('cached_key');
 

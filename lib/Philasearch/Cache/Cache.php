@@ -29,7 +29,7 @@ class Cache
      */
     private $client = null;
 
-    public function __construct ( $type, $cacheConfig = null, $cacheOptions = [] )
+    public function __construct ( $type=CacheProviders::REDIS, $cacheConfig = null, $cacheOptions = [] )
     {
         switch ( $type )
         {
