@@ -28,14 +28,11 @@ Add the following to your composer.json
 use Philasearch\Cache\Cache;
 use Philasearch\Cache\CacheProviders;
 
-Cache::setup(
-    CacheProviders::REDIS,
-    [
-        'scheme'    => 'tcp',
-        'host'      => 'localhost',
-        'database'  => 0
-    ]
-);
+Cache::setup( CacheProviders::REDIS, [
+    'scheme'    => 'tcp',
+    'host'      => 'localhost',
+    'database'  => 0
+]);
 ```
 
 ## Using Cached Objects
