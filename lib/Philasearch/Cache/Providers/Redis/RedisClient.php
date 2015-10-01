@@ -183,7 +183,7 @@ class RedisClient implements BaseClient
      */
     private function redisFunction ()
     {
-        $redis = self::connect();
+        $redis = $this->connect();
         $args = func_get_args();
         $function = array_shift($args);
 
@@ -192,7 +192,8 @@ class RedisClient implements BaseClient
             try
             {
                 return call_user_func_array([$redis, $function], $args);
-            } catch ( \Exception $e )
+            }
+            catch ( \Exception $e )
             {
                 throw new Exceptions\CommandException($function, $args);
             }
@@ -211,7 +212,7 @@ class RedisClient implements BaseClient
         if ( $this->config == null )
             $this->setup();
 
-        if ($this->redis == null )
+        if ( $this->redis == null )
         {
             $this->redis = new Client($this->config, $this->options);
 
