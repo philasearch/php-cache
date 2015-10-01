@@ -7,9 +7,9 @@
  * @version     1.0.0
  */
 
-namespace Philasearch\Cache\Providers\Redis\Objects\Tree;
+namespace Philasearch\Cache\Providers\Base\Tree;
 
-use Philasearch\Cache\Providers\Redis\RedisClient;
+use Philasearch\Cache\Providers\Base\BaseClient;
 
 /**
  * Class AddressBook
@@ -22,13 +22,16 @@ use Philasearch\Cache\Providers\Redis\RedisClient;
 class AddressBook
 {
     /**
-     * @var RedisClient
+     * @var BaseClient
      */
     private $client;
 
-    public function __construct ()
+    /**
+     * @param $client BaseClient
+     */
+    public function __construct ( $client )
     {
-        $this->client = new RedisClient();
+        $this->client = $client;
     }
 
     /**

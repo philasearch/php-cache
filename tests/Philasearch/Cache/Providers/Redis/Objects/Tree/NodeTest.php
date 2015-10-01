@@ -1,6 +1,7 @@
 <?php
 
-use Philasearch\Cache\Providers\Redis\Objects\Tree\Node as Node;
+
+use Philasearch\Cache\Providers\Base\Tree\Node;
 
 class NodeTest extends TestCase
 {

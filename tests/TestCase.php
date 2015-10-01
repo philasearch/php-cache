@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Philasearch\Cache\Providers\Redis\Objects\Tree\AddressBook;
+use Philasearch\Cache\Providers\Base\Tree\AddressBook;
 use Philasearch\Cache\Providers\Redis\RedisClient as RedisClient;
 
 class TestCase extends \PHPUnit_Framework_TestCase
@@ -19,8 +19,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp ()
     {
-        $this->addressBook = new AddressBook();
         $this->client = new RedisClient();
+        $this->addressBook = new AddressBook($this->client);
+
         $this->client->clear();
     }
 

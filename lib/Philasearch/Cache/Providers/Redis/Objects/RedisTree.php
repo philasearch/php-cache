@@ -10,8 +10,8 @@
 namespace Philasearch\Cache\Providers\Redis\Objects;
 
 use Philasearch\Cache\Providers\Base\Objects\BaseTree;
-use Philasearch\Cache\Providers\Redis\Objects\Tree\AddressBook;
-use Philasearch\Cache\Providers\Redis\Objects\Tree\Node;
+use Philasearch\Cache\Providers\Base\Tree\AddressBook;
+use Philasearch\Cache\Providers\Base\Tree\Node;
 use Philasearch\Cache\Providers\Redis\RedisClient;
 
 /**
@@ -60,7 +60,7 @@ class RedisTree implements BaseTree
         $this->key = $key;
 
         $this->client = new RedisClient();
-        $this->addressBook = new AddressBook();
+        $this->addressBook = new AddressBook( $this->client );
 
         $this->resume();
     }
