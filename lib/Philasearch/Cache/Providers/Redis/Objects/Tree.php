@@ -70,7 +70,7 @@ class Tree implements BaseTree
      */
     public function save ()
     {
-        $this->data = [ $this->root->getData() ];
+        $this->data = [$this->root->getData()];
         $cache = json_encode($this->data);
 
         $this->client->set($this->key, $cache);
@@ -99,10 +99,10 @@ class Tree implements BaseTree
      *
      * @return Node
      */
-    public function makeRootNode ( $id, $data = [ ] )
+    public function makeRootNode ( $id, $data = [] )
     {
         $this->root = new Node($id, $this, $data);
-        $this->root->setAddress([ 0 ]);
+        $this->root->setAddress([0]);
 
         return $this->root;
     }
@@ -133,7 +133,7 @@ class Tree implements BaseTree
     public function branch ( $id )
     {
         $nodes = $this->toArray($id);
-        $ids = [ $nodes['id'] ];
+        $ids = [$nodes['id']];
 
         if ( array_key_exists('children', $nodes) )
         {
@@ -214,7 +214,6 @@ class Tree implements BaseTree
      * Returns the address book key
      *
      * @return string
-     *
      */
     private function addressBookKey ()
     {

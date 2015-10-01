@@ -30,6 +30,7 @@ interface CachedArray
 
     /**
      * Removes an element from the array
+     *
      * @param $object
      *
      * @return mixed

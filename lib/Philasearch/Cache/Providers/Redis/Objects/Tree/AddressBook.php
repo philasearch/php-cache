@@ -8,6 +8,7 @@
  */
 
 namespace Philasearch\Cache\Providers\Redis\Objects\Tree;
+
 use Philasearch\Cache\Providers\Redis\RedisClient;
 
 /**
@@ -33,13 +34,13 @@ class AddressBook
     /**
      * Adds an address to the address book
      *
-     * @param $key
-     * @param $id
+     * @param       $key
+     * @param       $id
      * @param array $address
      */
-    public function add ( $key, $id, array $address=[] )
+    public function add ( $key, $id, array $address = [] )
     {
-        $this->client->hset($key,$id, json_encode($address));
+        $this->client->hset($key, $id, json_encode($address));
     }
 
     /**
@@ -50,7 +51,7 @@ class AddressBook
      *
      * @return mixed
      */
-    public function get($key, $id)
+    public function get ( $key, $id )
     {
         return json_decode($this->client->hget($key, $id), false);
     }

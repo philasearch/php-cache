@@ -4,7 +4,7 @@ use Philasearch\Cache\Cache;
 
 class CacheTest extends TestCase
 {
-    public function testCacheSetup()
+    public function testCacheSetup ()
     {
         Cache::setup(\Philasearch\Cache\CacheProviders::REDIS);
 

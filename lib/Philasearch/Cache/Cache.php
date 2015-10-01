@@ -28,11 +28,11 @@ class Cache
     /**
      * Sets up the cache
      *
-     * @param $type
-     * @param null $cacheConfig
+     * @param       $type
+     * @param null  $cacheConfig
      * @param array $cacheOptions
      */
-    public static function setup ( $type, $cacheConfig=null, $cacheOptions=[] )
+    public static function setup ( $type, $cacheConfig = null, $cacheOptions = [] )
     {
         switch ( $type )
         {
@@ -58,15 +58,15 @@ class Cache
     /**
      * Creates a cached object
      *
-     * @param   $key
-     * @param   $type
+     * @param       $key
+     * @param       $type
      *
      * @param array $data
-     * @param int $expire
+     * @param int   $expire
      *
      * @return null|RedisObject
      */
-    public static function object ( $key, $type, $data=[], $expire=0 )
+    public static function object ( $key, $type, $data = [], $expire = 0 )
     {
         switch ( self::$currentCache )
         {
@@ -74,12 +74,13 @@ class Cache
                 switch ( $type )
                 {
                     case ObjectType::OBJECT:
-                        return new RedisObject( $key, $data, $expire );
+                        return new RedisObject($key, $data, $expire);
                     case ObjectType::TREE:
                         return new RedisTree($key);
                 }
                 break;
         }
+
         return null;
     }
 

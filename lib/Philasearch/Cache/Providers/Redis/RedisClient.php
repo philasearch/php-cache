@@ -24,12 +24,12 @@ class RedisClient
     /**
      * @var Client
      */
-    private static $redis   = null;
+    private static $redis = null;
 
     /**
      * @var array
      */
-    private static $config  = [];
+    private static $config = [];
 
     /**
      * @var array
@@ -44,10 +44,10 @@ class RedisClient
      *
      * @return mixed
      */
-    public static function setup ( $config=null, $options=[] )
+    public static function setup ( $config = null, $options = [] )
     {
-        self::$config   = ( $config ) ? $config : 'tcp://127.0.0.1:6379?database=0';
-        self::$options  = $options;
+        self::$config = ($config) ? $config : 'tcp://127.0.0.1:6379?database=0';
+        self::$options = $options;
 
         return self::connect();
     }
@@ -55,14 +55,14 @@ class RedisClient
     /**
      * Expires a key in redis after a set time
      *
-     * @param string    $key    The key in redis
-     * @param integer   $time   The time to expire
+     * @param string  $key  The key in redis
+     * @param integer $time The time to expire
      *
      * @return mixed
      */
     public function expire ( $key, $time )
     {
-        return self::redisFunction( 'expire', $key, $time );
+        return self::redisFunction('expire', $key, $time);
     }
 
     /**
@@ -74,7 +74,7 @@ class RedisClient
      */
     public function get ( $key )
     {
-        return self::redisFunction( 'get', $key );
+        return self::redisFunction('get', $key);
     }
 
     /**
@@ -87,7 +87,7 @@ class RedisClient
      */
     public function hget ( $key, $field )
     {
-        $return = self::redisFunction( 'hget', $key, $field );
+        $return = self::redisFunction('hget', $key, $field);
 
         if ( !$return )
             return [];
@@ -106,7 +106,7 @@ class RedisClient
      */
     public function hset ( $key, $field, $value )
     {
-        return self::redisFunction( 'hset', $key, $field, $value );
+        return self::redisFunction('hset', $key, $field, $value);
     }
 
     /**
@@ -118,7 +118,7 @@ class RedisClient
      */
     public function hgetall ( $key )
     {
-        return self::redisFunction( 'hgetall', $key );
+        return self::redisFunction('hgetall', $key);
     }
 
     /**
@@ -131,7 +131,7 @@ class RedisClient
      */
     public function hdel ( $key, $field )
     {
-        return self::redisFunction( 'hdel', $key, $field );
+        return self::redisFunction('hdel', $key, $field);
     }
 
     /**
@@ -144,7 +144,7 @@ class RedisClient
      */
     public function set ( $key, $value )
     {
-        return self::redisFunction( 'set', $key, $value );
+        return self::redisFunction('set', $key, $value);
     }
 
     /**
@@ -152,9 +152,8 @@ class RedisClient
      */
     public function clear ()
     {
-        return self::redisFunction( 'flushdb' );
+        return self::redisFunction('flushdb');
     }
-
 
 
     /**
@@ -166,7 +165,7 @@ class RedisClient
      */
     public function keys ( $pattern )
     {
-        return self::redisFunction( 'keys', $pattern );
+        return self::redisFunction('keys', $pattern);
     }
 
     /**
@@ -179,19 +178,18 @@ class RedisClient
      */
     private static function redisFunction ()
     {
-        $redis      = self::connect();
-        $args       = func_get_args();
-        $function   = array_shift( $args );
+        $redis = self::connect();
+        $args = func_get_args();
+        $function = array_shift($args);
 
         if ( $redis )
         {
             try
             {
-                return call_user_func_array( array($redis, $function), $args );
-            }
-            catch ( \Exception $e )
+                return call_user_func_array([$redis, $function], $args);
+            } catch ( \Exception $e )
             {
-                throw new Exceptions\CommandException( $function, $args );
+                throw new Exceptions\CommandException($function, $args);
             }
         }
 
@@ -210,15 +208,15 @@ class RedisClient
 
         if ( self::$redis == null )
         {
-            self::$redis = new Client( self::$config, self::$options );
+            self::$redis = new Client(self::$config, self::$options);
 
             try
             {
                 self::$redis->connect();
-            }
-            catch ( \Exception $e )
+            } catch ( \Exception $e )
             {
                 self::$redis = null;
+
                 return false;
             }
         }

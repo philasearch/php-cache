@@ -4,39 +4,39 @@ use Philasearch\Cache\Providers\Redis\Objects\Object as Object;
 
 class ObjectTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor ()
     {
         new Object('foo_key', ['foo' => 'bar']);
         $this->assertEquals('bar', $this->client->hget('foo_key', 'foo'));
     }
 
-    public function testSet()
+    public function testSet ()
     {
         $object = new Object('foo_key', ['foo' => 'bar']);
         $object->set('foo', 'bar2');
         $this->assertEquals('bar2', $this->client->hget('foo_key', 'foo'));
     }
 
-    public function testGet()
+    public function testGet ()
     {
         $object = new Object('foo_key', ['foo' => 'bar']);
         $this->assertEquals('bar', $object->get('foo'));
     }
 
-    public function testGetAll()
+    public function testGetAll ()
     {
         $object = new Object('foo_key', ['foo' => 'bar', 'bar' => 'foo']);
         $this->assertEquals(['foo' => 'bar', 'bar' => 'foo'], $object->getAll());
     }
 
-    public function testNewAfterAlreadyCreated()
+    public function testNewAfterAlreadyCreated ()
     {
         new Object('foo_key', ['foo' => 'bar']);
         new Object('foo_key');
         $this->assertEquals('bar', $this->client->hget('foo_key', 'foo'));
     }
 
-    public function testDeleteAll()
+    public function testDeleteAll ()
     {
         $object = new Object('foo_key', ['foo' => 'bar', 'bar' => 'foo']);
         $this->assertEquals(['foo' => 'bar', 'bar' => 'foo'], $object->getAll());
@@ -44,7 +44,7 @@ class ObjectTest extends TestCase
         $this->assertEquals([], $object->getAll());
     }
 
-    public function testDelete()
+    public function testDelete ()
     {
         $object = new Object('foo_key', ['foo' => 'bar', 'bar' => 'foo']);
         $this->assertEquals(['foo' => 'bar', 'bar' => 'foo'], $object->getAll());

@@ -22,7 +22,7 @@ interface BaseObject
     /**
      * Expires the object after a set time
      *
-     * @param integer  $expire   The time to expire
+     * @param integer $expire The time to expire
      */
     public function expire ( $expire );
 
@@ -55,12 +55,12 @@ interface BaseObject
     /**
      * Deletes a field from the object
      *
-     * @param $key
+     * @param      $key
      * @param bool $refreshData
      *
      * @return mixed
      */
-    public function delete ( $key, $refreshData=true );
+    public function delete ( $key, $refreshData = true );
 
     /**
      * Delete's all the fields from the object

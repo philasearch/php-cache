@@ -49,19 +49,19 @@ class Node
     /**
      * Constructs the node
      *
-     * @param $id
-     * @param Tree $tree
+     * @param       $id
+     * @param Tree  $tree
      * @param array $data
      *
      */
-    public function __construct ( $id, Tree $tree=null, $data=[] )
+    public function __construct ( $id, Tree $tree = null, $data = [] )
     {
-        $this->data         = $data;
-        $this->data['id']   = $id;
-        $this->address      = [0];
-        $this->id           = $id;
-        $this->tree         = $tree;
-        $this->children     = [];
+        $this->data = $data;
+        $this->data['id'] = $id;
+        $this->address = [0];
+        $this->id = $id;
+        $this->tree = $tree;
+        $this->children = [];
     }
 
     /**
@@ -121,16 +121,16 @@ class Node
      * Adds a child to the node
      *
      * @param string $id
-     * @param array $data
-     * @param bool $saveToCache
+     * @param array  $data
+     * @param bool   $saveToCache
      *
      * @return Node
      */
-    public function addChild ( $id, $data=[], $saveToCache=true )
+    public function addChild ( $id, $data = [], $saveToCache = true )
     {
-        $child      = new Node($id, $this->tree, $data);
-        $address    = $this->address;
-        $address[]  = count($this->children);
+        $child = new Node($id, $this->tree, $data);
+        $address = $this->address;
+        $address[] = count($this->children);
 
         $this->children[] = $child;
 
@@ -143,10 +143,10 @@ class Node
     /**
      * Sets a node address
      *
-     * @param $address
+     * @param      $address
      * @param bool $saveToCache
      */
-    public function setAddress ( $address, $saveToCache=true )
+    public function setAddress ( $address, $saveToCache = true )
     {
         $this->address = $address;
 
@@ -180,12 +180,12 @@ class Node
      */
     public function resume ()
     {
-        if (array_key_exists('children', $this->data))
+        if ( array_key_exists('children', $this->data) )
         {
             $children = (array_key_exists('children', $this->data)) ? $this->data['children'] : [];
             $this->data['children'] = [];
 
-            foreach ($children as $child_cache)
+            foreach ( $children as $child_cache )
             {
                 $this->addChild($child_cache['id'], $child_cache, false);
             }

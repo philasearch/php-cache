@@ -19,9 +19,7 @@ use Philasearch\Cache\Providers\Base\Objects\BaseTree;
  * A tree that interacts with a cache store for saving data
  *
  * @package Philasearch\Cache\Objects
- *
  */
-
 class CachedTree
 {
     /**
@@ -42,13 +40,13 @@ class CachedTree
     /**
      * Constructs the Cached Object
      *
-     * @param string $key
+     * @param string   $key
      * @param BaseTree $base
      */
     public function __construct ( $key, BaseTree $base = null )
     {
         $this->key = $key;
-        $this->base = ( $base != null ) ? $base : Cache::object( $this->key, ObjectType::TREE );
+        $this->base = ($base != null) ? $base : Cache::object($this->key, ObjectType::TREE);
     }
 
     /**
@@ -67,7 +65,6 @@ class CachedTree
      * @param $address
      *
      * @return mixed
-     *
      */
     public function cacheNodeAddress ( $id, $address )
     {
@@ -82,7 +79,7 @@ class CachedTree
      *
      * @return mixed
      */
-    public function makeRootNode ( $id, $data=[] )
+    public function makeRootNode ( $id, $data = [] )
     {
         return $this->base->makeRootNode($id, $data);
     }
@@ -95,9 +92,8 @@ class CachedTree
      * @param string $id
      *
      * @return mixed
-     *
      */
-    public function toArray ( $id=null )
+    public function toArray ( $id = null )
     {
         return $this->base->toArray($id);
     }
@@ -118,7 +114,6 @@ class CachedTree
      * @param $id
      *
      * @return mixed
-     *
      */
     public function branch ( $id )
     {

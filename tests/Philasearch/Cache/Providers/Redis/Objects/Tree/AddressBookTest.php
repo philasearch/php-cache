@@ -5,15 +5,15 @@ use Philasearch\Cache\Providers\Redis\RedisClient;
 
 class AddressBookTest extends TestCase
 {
-    public function testAdd()
+    public function testAdd ()
     {
         $this->addressBook->add("test_key", "id", [0]);
         $this->assertEquals('[0]', $this->client->hget("test_key", "id"));
     }
 
-    public function testGet()
+    public function testGet ()
     {
-        $this->addressBook->add("test_key", "id", [0,1]);
-        $this->assertEquals([0,1], $this->addressBook->get("test_key", "id"));
+        $this->addressBook->add("test_key", "id", [0, 1]);
+        $this->assertEquals([0, 1], $this->addressBook->get("test_key", "id"));
     }
 }

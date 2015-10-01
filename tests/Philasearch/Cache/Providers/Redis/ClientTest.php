@@ -2,13 +2,13 @@
 
 class ClientTest extends TestCase
 {
-    public function testGetSet()
+    public function testGetSet ()
     {
         $this->client->set('foo_key', 'foo_value');
         $this->assertEquals('foo_value', $this->client->get('foo_key'));
     }
 
-    public function testClearingOfDatabase()
+    public function testClearingOfDatabase ()
     {
         $this->client->set('foo_key', 'foo_value');
         $this->assertEquals('foo_value', $this->client->get('foo_key'));

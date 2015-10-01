@@ -32,7 +32,7 @@ class CachedTreeTest extends TestCase
     {
         $this->base->shouldReceive('cacheNodeAddress')->once();
 
-        $this->tree->cacheNodeAddress('key', [ 0 ]);
+        $this->tree->cacheNodeAddress('key', [0]);
     }
 
     public function testMakeRootNode ()

@@ -21,7 +21,7 @@ class CachedObjectTest extends PHPUnit_Framework_TestCase
         $this->object = new CachedObject('key', 0, [], $this->base);
     }
 
-    public function testFillingInObject()
+    public function testFillingInObject ()
     {
         $this->base->shouldReceive('fill')->once();
         $this->base->shouldReceive('get')->once()->andReturn('bar');
@@ -29,7 +29,7 @@ class CachedObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->object->get('foo'));
     }
 
-    public function testSettingFieldForObject()
+    public function testSettingFieldForObject ()
     {
         $this->base->shouldReceive('get')->once()->andReturn('bar');
         $this->base->shouldReceive('set')->once();
@@ -37,7 +37,7 @@ class CachedObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->object->get('foo'));
     }
 
-    public function testGetAll()
+    public function testGetAll ()
     {
         $this->base->shouldReceive('getAll')->once()->andReturn(['foo' => 'bar']);
         $this->base->shouldReceive('fill')->once();
@@ -45,13 +45,13 @@ class CachedObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(['foo' => 'bar'], $this->object->getAll());
     }
 
-    public function testDelete()
+    public function testDelete ()
     {
         $this->base->shouldReceive('delete')->once();
         $this->object->delete('foo');
     }
 
-    public function testDeleteAll()
+    public function testDeleteAll ()
     {
         $this->base->shouldReceive('deleteAll')->once();
         $this->object->deleteAll();

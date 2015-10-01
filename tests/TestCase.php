@@ -17,14 +17,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $addressBook;
 
-    public function setUp()
+    public function setUp ()
     {
         $this->addressBook = new AddressBook();
         $this->client = new RedisClient();
         $this->client->clear();
     }
 
-    public function tearDown()
+    public function tearDown ()
     {
         \Mockery::close();
     }

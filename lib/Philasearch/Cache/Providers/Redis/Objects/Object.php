@@ -40,32 +40,32 @@ class Object implements Base\Objects\BaseObject
     /**
      * Constructs a redis object
      *
-     * @param $key
+     * @param       $key
      * @param array $data
-     * @param int $expire
+     * @param int   $expire
      */
-    public function __construct ( $key, array $data=[], $expire=0 )
+    public function __construct ( $key, array $data = [], $expire = 0 )
     {
         $this->client = new RedisClient();
 
-        $this->key  = $key;
+        $this->key = $key;
         $this->data = $this->getAll();
 
         if ( $expire != 0 )
-            $this->expire( $expire );
+            $this->expire($expire);
 
-        $this->fill( $data );
+        $this->fill($data);
     }
 
 
     /**
      * Expires the object after a set time
      *
-     * @param int  $time   The time to expire
+     * @param int $time The time to expire
      */
     public function expire ( $time )
     {
-        $this->client->expire( $this->key, $time );
+        $this->client->expire($this->key, $time);
     }
 
     /**
@@ -78,7 +78,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function set ( $field, $value )
     {
-        $this->client->hset( $this->key, $field, $value );
+        $this->client->hset($this->key, $field, $value);
 
         $this->data = $this->getAll();
     }
@@ -91,7 +91,7 @@ class Object implements Base\Objects\BaseObject
     public function fill ( array $data )
     {
         foreach ( $data as $key => $value )
-            $this->set( $key, $value );
+            $this->set($key, $value);
 
         $this->data = $this->getAll();
     }
@@ -105,7 +105,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function get ( $field )
     {
-        return $this->client->hget( $this->key, $field );
+        return $this->client->hget($this->key, $field);
     }
 
     /**
@@ -115,19 +115,20 @@ class Object implements Base\Objects\BaseObject
      */
     public function getAll ()
     {
-        return $this->client->hgetall( $this->key );
+        return $this->client->hgetall($this->key);
     }
 
     /**
      * Deletes all the data from the redis store
-     * @param $key
+     *
+     * @param      $key
      * @param bool $refreshData
      *
      * @return mixed|void
      */
-    public function delete ( $key, $refreshData=true )
+    public function delete ( $key, $refreshData = true )
     {
-        $this->client->hdel( $this->key, $key );
+        $this->client->hdel($this->key, $key);
 
         if ( $refreshData )
             $this->data = $this->getAll();
@@ -138,10 +139,10 @@ class Object implements Base\Objects\BaseObject
      */
     public function deleteAll ()
     {
-        $data = $this->client->hgetall( $this->key );
+        $data = $this->client->hgetall($this->key);
 
         foreach ( $data as $key => $value )
-            $this->delete( $key, false );
+            $this->delete($key, false);
 
         $this->data = [];
     }

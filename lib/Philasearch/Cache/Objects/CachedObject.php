@@ -41,15 +41,15 @@ class CachedObject
     /**
      * Constructs the Cached Object
      *
-     * @param string $key
-     * @param int $expire
-     * @param array $data
+     * @param string     $key
+     * @param int        $expire
+     * @param array      $data
      * @param BaseObject $base
      */
-    public function __construct ( $key, $expire=0, $data=[], BaseObject $base = null )
+    public function __construct ( $key, $expire = 0, $data = [], BaseObject $base = null )
     {
         $this->key = $key;
-        $this->base = ( $base != null ) ? $base : Cache::object($this->key, ObjectType::OBJECT, $data, $expire);
+        $this->base = ($base != null) ? $base : Cache::object($this->key, ObjectType::OBJECT, $data, $expire);
     }
 
     /**
@@ -59,7 +59,7 @@ class CachedObject
      */
     public function expire ( $expire )
     {
-        $this->base->expire( $expire );
+        $this->base->expire($expire);
     }
 
     /**
@@ -71,7 +71,7 @@ class CachedObject
      */
     public function get ( $field )
     {
-        return $this->base->get( $field );
+        return $this->base->get($field);
     }
 
     /**
@@ -82,7 +82,7 @@ class CachedObject
      */
     public function set ( $field, $value )
     {
-        $this->base->set( $field, $value );
+        $this->base->set($field, $value);
     }
 
     /**
@@ -92,7 +92,7 @@ class CachedObject
      */
     public function fill ( array $data )
     {
-        $this->base->fill( $data );
+        $this->base->fill($data);
     }
 
     /**
@@ -112,7 +112,7 @@ class CachedObject
      */
     public function delete ( $key )
     {
-        $this->base->delete( $key, true );
+        $this->base->delete($key, true);
     }
 
     /**

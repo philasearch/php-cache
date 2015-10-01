@@ -13,6 +13,6 @@ use MyCLabs\Enum\Enum;
 
 class ObjectType extends Enum
 {
-    const OBJECT    = 1;
-    const TREE      = 2;
+    const OBJECT = 1;
+    const TREE = 2;
 }

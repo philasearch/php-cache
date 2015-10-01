@@ -10,7 +10,7 @@ class TreeTest extends TestCase
         $root = $tree->makeRootNode("id");
 
         $this->assertNotNull($root);
-        $this->assertEquals([ 0 ], $root->getAddress());
+        $this->assertEquals([0], $root->getAddress());
     }
 
     public function testCacheOfRootNodeAddress ()
@@ -19,8 +19,8 @@ class TreeTest extends TestCase
         $root = $tree->makeRootNode("id");
 
         $this->assertNotNull($root);
-        $this->assertEquals([ 0 ], $root->getAddress());;
-        $this->assertEquals([ 0 ], $this->addressBook->get('key:addresses', "id"));
+        $this->assertEquals([0], $root->getAddress());;
+        $this->assertEquals([0], $this->addressBook->get('key:addresses', "id"));
     }
 
     public function testIsEmpty ()
@@ -38,15 +38,15 @@ class TreeTest extends TestCase
     public function testGetDataWithHierarchyDepth1 ()
     {
         $tree = new Tree('key');
-        $tree->makeRootNode("id", [ 'foo' => 'bar' ]);
-        $this->assertEquals([ "id" => "id", "foo" => "bar" ], $tree->toArray());
+        $tree->makeRootNode("id", ['foo' => 'bar']);
+        $this->assertEquals(["id" => "id", "foo" => "bar"], $tree->toArray());
     }
 
     public function testGetDataWithHierarchyDepth2 ()
     {
         $tree = new Tree('key');
-        $root = $tree->makeRootNode('0', [ 'foo' => 'bar' ]);
-        $root->addChild('1', [ "foo" => "bar2" ]);
+        $root = $tree->makeRootNode('0', ['foo' => 'bar']);
+        $root->addChild('1', ["foo" => "bar2"]);
 
         $expect = [
             "id" => '0',
@@ -65,10 +65,10 @@ class TreeTest extends TestCase
     public function testGetDataWithHierarchyDepth3 ()
     {
         $tree = new Tree('key');
-        $root = $tree->makeRootNode('0', [ 'foo' => 'bar' ]);
-        $child = $root->addChild('1', [ "foo" => "bar2" ]);
+        $root = $tree->makeRootNode('0', ['foo' => 'bar']);
+        $child = $root->addChild('1', ["foo" => "bar2"]);
 
-        $child->addChild('2', [ 'foo' => 'bar3' ]);
+        $child->addChild('2', ['foo' => 'bar3']);
 
         $expect = [
             'id' => '0',
@@ -93,10 +93,10 @@ class TreeTest extends TestCase
     public function testGetBranch ()
     {
         $tree = new Tree('key');
-        $root = $tree->makeRootNode('0', [ 'foo' => 'bar' ]);
-        $child = $root->addChild('1', [ "foo" => "bar2" ]);
+        $root = $tree->makeRootNode('0', ['foo' => 'bar']);
+        $child = $root->addChild('1', ["foo" => "bar2"]);
 
-        $child->addChild('2', [ 'foo' => 'bar3' ]);
+        $child->addChild('2', ['foo' => 'bar3']);
 
         $expect = [
             'id' => '1',
@@ -115,10 +115,10 @@ class TreeTest extends TestCase
     public function testTreeCaching ()
     {
         $tree = new Tree('tree');
-        $root = $tree->makeRootNode('0', [ 'foo' => 'bar' ]);
-        $child = $root->addChild('1', [ "foo" => "bar2" ]);
+        $root = $tree->makeRootNode('0', ['foo' => 'bar']);
+        $child = $root->addChild('1', ["foo" => "bar2"]);
 
-        $child->addChild('2', [ 'foo' => 'bar3' ]);
+        $child->addChild('2', ['foo' => 'bar3']);
         $tree->save();
 
         $array = [
@@ -148,16 +148,16 @@ class TreeTest extends TestCase
     public function testTreeResume ()
     {
         $tree = new Tree('tree');
-        $root = $tree->makeRootNode('1', [ 'foo' => 'bar' ]);
-        $child = $root->addChild('2', [ "foo" => "bar2" ]);
-        $child->addChild('3', [ 'foo' => 'bar3' ]);
+        $root = $tree->makeRootNode('1', ['foo' => 'bar']);
+        $child = $root->addChild('2', ["foo" => "bar2"]);
+        $child->addChild('3', ['foo' => 'bar3']);
         $tree->save();
 
         $expectData = $tree->toArray();
 
-        $this->assertEquals([ '1', '2', '3' ], $tree->branch(1));
-        $this->assertEquals([ '2', '3' ], $tree->branch(2));
-        $this->assertEquals([ '3' ], $tree->branch(3));
+        $this->assertEquals(['1', '2', '3'], $tree->branch(1));
+        $this->assertEquals(['2', '3'], $tree->branch(2));
+        $this->assertEquals(['3'], $tree->branch(3));
 
         $tree = new Tree('tree');
 
@@ -165,13 +165,13 @@ class TreeTest extends TestCase
         $child = $root->getChildren()[0];
         $grandchild = $child->getChildren()[0];
 
-        $this->assertEquals([ 0 ], $root->getAddress());
-        $this->assertEquals([ 0, 0 ], $child->getAddress());
-        $this->assertEquals([ 0, 0, 0 ], $grandchild->getAddress());
+        $this->assertEquals([0], $root->getAddress());
+        $this->assertEquals([0, 0], $child->getAddress());
+        $this->assertEquals([0, 0, 0], $grandchild->getAddress());
 
-        $this->assertEquals([ '1', '2', '3' ], $tree->branch(1));
-        $this->assertEquals([ '2', '3' ], $tree->branch(2));
-        $this->assertEquals([ '3' ], $tree->branch(3));
+        $this->assertEquals(['1', '2', '3'], $tree->branch(1));
+        $this->assertEquals(['2', '3'], $tree->branch(2));
+        $this->assertEquals(['3'], $tree->branch(3));
 
         $this->assertEquals($expectData, $tree->toArray());
     }
@@ -179,11 +179,11 @@ class TreeTest extends TestCase
     public function testTreeBranch ()
     {
         $tree = new Tree('tree');
-        $root = $tree->makeRootNode('0', [ 'foo' => 'bar' ]);
-        $root->addChild('1', [ "foo" => "bar2" ]);
+        $root = $tree->makeRootNode('0', ['foo' => 'bar']);
+        $root->addChild('1', ["foo" => "bar2"]);
         $tree->save();
 
-        $this->assertEquals([ '0', '1' ], $tree->branch('0'));
+        $this->assertEquals(['0', '1'], $tree->branch('0'));
     }
 
 }

@@ -43,7 +43,7 @@ interface BaseTree
      *
      * @return mixed
      */
-    public function makeRootNode ( $id, $data = [ ] );
+    public function makeRootNode ( $id, $data = [] );
 
     /**
      * Returns an array of the tree's data from the
