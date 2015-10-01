@@ -34,26 +34,7 @@ interface BaseObject
      *
      * @return mixed
      */
-    public function __set ( $field, $value );
-
-    /**
-     * Sets a field's value for the object
-     *
-     * @param $field
-     * @param $value
-     *
-     * @return mixed
-     */
     public function set ( $field, $value );
-
-    /**
-     * Gets a field's value for the object
-     *
-     * @param $field
-     *
-     * @return mixed
-     */
-    public function __get ( $field );
 
     /**
      * Gets a field's value for the object

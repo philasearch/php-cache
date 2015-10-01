@@ -69,19 +69,6 @@ class Object implements Base\Objects\BaseObject
     }
 
     /**
-     * Sets a value in the redis store for the object
-     *
-     * @param $field
-     * @param $value
-     *
-     * @return mixed|void
-     */
-    public function __set ( $field, $value )
-    {
-        $this->set( $field, $value );
-    }
-
-    /**
      * Sets a field for the object
      *
      * @param $field
@@ -107,17 +94,6 @@ class Object implements Base\Objects\BaseObject
             $this->set( $key, $value );
 
         $this->data = $this->getAll();
-    }
-    /**
-     * Gets the data from the redis store for the object
-     *
-     * @param $field
-     *
-     * @return mixed
-     */
-    public function __get ( $field )
-    {
-        return $this->get( $field );
     }
 
     /**

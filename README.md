@@ -82,11 +82,9 @@ $object = new CachedObject('cache_key');
 $object->fill(['foo' => 'bar']);
 
 # set methods
-$object->foo = 'bar';
 $object->set('foo', 'bar');
 
 # get methods
-$foo = $object->foo;
 $foo = $object->get('foo');
 ```
 

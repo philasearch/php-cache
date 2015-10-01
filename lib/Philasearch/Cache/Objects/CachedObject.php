@@ -77,18 +77,6 @@ class CachedObject
     }
 
     /**
-     * Gets a field from the object
-     *
-     * @param $field
-     *
-     * @return mixed
-     */
-    public function __get ( $field )
-    {
-        return $this->get( $field );
-    }
-
-    /**
      * Set a field for the object
      *
      * @param $field
@@ -97,17 +85,6 @@ class CachedObject
     public function set ( $field, $value )
     {
         $this->base->set( $field, $value );
-    }
-
-    /**
-     * Sets a field for the object
-     *
-     * @param $field
-     * @param $value
-     */
-    public function __set ( $field, $value )
-    {
-        $this->set( $field, $value );
     }
 
     /**

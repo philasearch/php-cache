@@ -85,12 +85,22 @@ class Node
     }
 
     /**
+     * Returns the id of the node
+     *
+     * @return string
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+    /**
      * Sets the node value for a field
      *
      * @param $field
      * @param $value
      */
-    public function __set ( $field, $value )
+    public function set ( $field, $value )
     {
         $this->data[$field] = $value;
     }
@@ -102,7 +112,7 @@ class Node
      *
      * @return mixed
      */
-    public function __get ( $field )
+    public function get ( $field )
     {
         return $this->data[$field];
     }
@@ -158,7 +168,7 @@ class Node
     /**
      * Gets the children of the node
      *
-     * @return array
+     * @return Node[]
      */
     public function getChildren ()
     {

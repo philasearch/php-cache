@@ -13,7 +13,7 @@ class NodeTest extends TestCase
     public function testSetNodeData()
     {
         $node = new Node("id", null, ['data', 'foo']);
-        $node->bar = 'foo';
+        $node->set('bar', 'foo');
         $this->assertEquals(["id" => "id", 'data', 'foo', 'bar' => 'foo'], $node->getData());
     }
 
@@ -68,16 +68,16 @@ class NodeTest extends TestCase
         $this->assertEquals([0, 0], $child->getAddress());
         $this->assertEquals([0, 0, 0], $grandchild->getAddress());
 
-        $this->assertEquals('1', $node->id);
-        $this->assertEquals('bar', $node->foo);
-        $this->assertEquals('2', $child->id);
-        $this->assertEquals('bar2', $child->foo2);
+        $this->assertEquals('1', $node->getId());
+        $this->assertEquals('bar', $node->get('foo'));
+        $this->assertEquals('2', $child->getId());
+        $this->assertEquals('bar2', $child->get('foo2'));
 
-        $resumedNode        = new Node( 1, null, $node->getData());
+        $resumedNode = new Node( 1, null, $node->getData());
         $resumedNode->resume();
 
-        $resumedChild       = $node->getChildren()[0];
-        $resumedGrandchild  = $resumedChild->getChildren()[0];
+        $resumedChild = $node->getChildren()[0];
+        $resumedGrandchild = $resumedChild->getChildren()[0];
 
         $this->assertEquals($node->getData(), $resumedNode->getData());
 
@@ -85,12 +85,12 @@ class NodeTest extends TestCase
         $this->assertEquals([0, 0], $resumedChild->getAddress());
         $this->assertEquals([0, 0, 0], $resumedGrandchild->getAddress());
 
-        $this->assertEquals('1', $resumedNode->id);
-        $this->assertEquals('bar', $resumedNode->foo);
-        $this->assertEquals('2', $resumedChild->id);
-        $this->assertEquals('bar2', $resumedChild->foo2);
-        $this->assertEquals('3', $resumedGrandchild->id);
-        $this->assertEquals('bar3',$resumedGrandchild->foo3);
+        $this->assertEquals('1', $resumedNode->getId());
+        $this->assertEquals('bar', $resumedNode->get('foo'));
+        $this->assertEquals('2', $resumedChild->getId());
+        $this->assertEquals('bar2', $resumedChild->get('foo2'));
+        $this->assertEquals('3', $resumedGrandchild->getId());
+        $this->assertEquals('bar3',$resumedGrandchild->get('foo3'));
 
     }
 
