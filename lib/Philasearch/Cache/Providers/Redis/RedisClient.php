@@ -9,6 +9,11 @@
 
 namespace Philasearch\Cache\Providers\Redis;
 
+use Philasearch\Cache\Providers\Base\BaseClient;
+use Philasearch\Cache\Providers\Base\Objects\BaseObject;
+use Philasearch\Cache\Providers\Base\Objects\BaseTree;
+use Philasearch\Cache\Providers\Redis\Objects\RedisObject;
+use Philasearch\Cache\Providers\Redis\Objects\RedisTree;
 use Predis\Client;
 
 /**
@@ -19,22 +24,22 @@ use Predis\Client;
  * @package Philasearch\Cache\Providers\Redis
  *
  */
-class RedisClient
+class RedisClient implements BaseClient
 {
     /**
      * @var Client
      */
-    private static $redis = null;
+    private $redis = null;
 
     /**
      * @var array
      */
-    private static $config = [];
+    private $config = [];
 
     /**
      * @var array
      */
-    private static $options = [];
+    private $options = [];
 
     /**
      * Configures the Redis Client
@@ -44,12 +49,12 @@ class RedisClient
      *
      * @return mixed
      */
-    public static function setup ( $config = null, $options = [] )
+    public function setup ( $config = null, $options = [] )
     {
-        self::$config = ($config) ? $config : 'tcp://127.0.0.1:6379?database=0';
-        self::$options = $options;
+        $this->config = ($config) ? $config : 'tcp://127.0.0.1:6379?database=0';
+        $this->options = $options;
 
-        return self::connect();
+        return $this->connect();
     }
 
     /**
@@ -62,7 +67,7 @@ class RedisClient
      */
     public function expire ( $key, $time )
     {
-        return self::redisFunction('expire', $key, $time);
+        return $this->redisFunction('expire', $key, $time);
     }
 
     /**
@@ -74,7 +79,7 @@ class RedisClient
      */
     public function get ( $key )
     {
-        return self::redisFunction('get', $key);
+        return $this->redisFunction('get', $key);
     }
 
     /**
@@ -85,9 +90,9 @@ class RedisClient
      *
      * @return mixed
      */
-    public function hget ( $key, $field )
+    public function getHashValue ( $key, $field )
     {
-        $return = self::redisFunction('hget', $key, $field);
+        $return = $this->redisFunction('hget', $key, $field);
 
         if ( !$return )
             return [];
@@ -104,9 +109,9 @@ class RedisClient
      *
      * @return mixed
      */
-    public function hset ( $key, $field, $value )
+    public function setHashValue ( $key, $field, $value )
     {
-        return self::redisFunction('hset', $key, $field, $value);
+        return $this->redisFunction('hset', $key, $field, $value);
     }
 
     /**
@@ -116,9 +121,9 @@ class RedisClient
      *
      * @return mixed
      */
-    public function hgetall ( $key )
+    public function getHashFull ( $key )
     {
-        return self::redisFunction('hgetall', $key);
+        return $this->redisFunction('hgetall', $key);
     }
 
     /**
@@ -129,9 +134,9 @@ class RedisClient
      *
      * @return mixed
      */
-    public function hdel ( $key, $field )
+    public function deleteHashValue ( $key, $field )
     {
-        return self::redisFunction('hdel', $key, $field);
+        return $this->redisFunction('hdel', $key, $field);
     }
 
     /**
@@ -144,7 +149,7 @@ class RedisClient
      */
     public function set ( $key, $value )
     {
-        return self::redisFunction('set', $key, $value);
+        return $this->redisFunction('set', $key, $value);
     }
 
     /**
@@ -152,7 +157,7 @@ class RedisClient
      */
     public function clear ()
     {
-        return self::redisFunction('flushdb');
+        return $this->redisFunction('flushdb');
     }
 
 
@@ -165,7 +170,7 @@ class RedisClient
      */
     public function keys ( $pattern )
     {
-        return self::redisFunction('keys', $pattern);
+        return $this->redisFunction('keys', $pattern);
     }
 
     /**
@@ -176,7 +181,7 @@ class RedisClient
      * @throws Exceptions\CommandException
      * @throws Exceptions\ConnectionException
      */
-    private static function redisFunction ()
+    private function redisFunction ()
     {
         $redis = self::connect();
         $args = func_get_args();
@@ -201,26 +206,53 @@ class RedisClient
      *
      * @return null|RedisClient
      */
-    private static function connect ()
+    private function connect ()
     {
-        if ( self::$config == null )
-            self::setup();
+        if ( $this->config == null )
+            $this->setup();
 
-        if ( self::$redis == null )
+        if ($this->redis == null )
         {
-            self::$redis = new Client(self::$config, self::$options);
+            $this->redis = new Client($this->config, $this->options);
 
             try
             {
-                self::$redis->connect();
-            } catch ( \Exception $e )
+                $this->redis->connect();
+            }
+            catch ( \Exception $e )
             {
-                self::$redis = null;
+                $this->redis = null;
 
                 return false;
             }
         }
 
-        return self::$redis;
+        return $this->redis;
+    }
+
+    /**
+     * Returns a new object
+     *
+     * @param $key
+     * @param $data
+     * @param $expire
+     *
+     * @return BaseObject
+     */
+    public function createObject ( $key, $data, $expire )
+    {
+        return new RedisObject($key, $data, $expire);
+    }
+
+    /**
+     * Returns a new tree object
+     *
+     * @param $key
+     *
+     * @return BaseTree
+     */
+    public function createTree ( $key )
+    {
+        return new RedisTree($key);
     }
 }

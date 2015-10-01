@@ -9,9 +9,10 @@
 
 namespace Philasearch\Cache;
 
-use Philasearch\Cache\Providers\Redis\RedisClient as RedisClient;
-use Philasearch\Cache\Providers\Redis\Objects\Object as RedisObject;
-use Philasearch\Cache\Providers\Redis\Objects\Tree as RedisTree;
+use Philasearch\Cache\Providers\Base\BaseClient;
+use Philasearch\Cache\Providers\Base\Objects\BaseObject;
+use Philasearch\Cache\Providers\Base\Objects\BaseTree;
+use Philasearch\Cache\Providers\Redis\RedisClient;
 
 /**
  * Class Cache
@@ -23,81 +24,56 @@ use Philasearch\Cache\Providers\Redis\Objects\Tree as RedisTree;
  */
 class Cache
 {
-    private static $currentCache = CacheProviders::REDIS;
-
     /**
-     * Sets up the cache
-     *
-     * @param       $type
-     * @param null  $cacheConfig
-     * @param array $cacheOptions
+     * @var BaseClient
      */
-    public static function setup ( $type, $cacheConfig = null, $cacheOptions = [] )
+    private $client = null;
+
+    public function __construct ( $type, $cacheConfig = null, $cacheOptions = [] )
     {
         switch ( $type )
         {
             case CacheProviders::REDIS:
-                RedisClient::setup($cacheConfig, $cacheOptions);
-                self::$currentCache = CacheProviders::REDIS;
+                $this->client = new RedisClient($cacheConfig, $cacheOptions);
                 break;
-            default:
+            default;
                 break;
         }
-    }
-
-    /**
-     * Returns the current cache type
-     *
-     * @return int
-     */
-    public static function currentCache ()
-    {
-        return self::$currentCache;
     }
 
     /**
      * Creates a cached object
      *
      * @param       $key
-     * @param       $type
-     *
      * @param array $data
      * @param int   $expire
      *
-     * @return null|RedisObject
+     * @return BaseObject
      */
-    public static function object ( $key, $type, $data = [], $expire = 0 )
+    public function createObject ( $key, $data = [], $expire = 0 )
     {
-        switch ( self::$currentCache )
-        {
-            case CacheProviders::REDIS:
-                switch ( $type )
-                {
-                    case ObjectType::OBJECT:
-                        return new RedisObject($key, $data, $expire);
-                    case ObjectType::TREE:
-                        return new RedisTree($key);
-                }
-                break;
-        }
+        return $this->client->createObject($key, $data, $expire);
+    }
 
-        return null;
+    /**
+     * Creates a cached tree
+     *
+     * @param $key
+     *
+     * @return BaseTree
+     */
+    public function createTree ( $key )
+    {
+        return $this->client->createTree($key);
     }
 
     /**
      * Returns a client
      *
-     * @return null|RedisClient
+     * @return BaseClient
      */
-    public static function getClient ()
+    public function getClient ()
     {
-        switch ( self::$currentCache )
-        {
-            case CacheProviders::REDIS:
-                return new RedisClient();
-                break;
-        }
-
-        return null;
+        return $this->client;
     }
 }

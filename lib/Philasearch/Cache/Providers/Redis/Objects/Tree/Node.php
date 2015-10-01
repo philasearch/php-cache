@@ -9,7 +9,7 @@
 
 namespace Philasearch\Cache\Providers\Redis\Objects\Tree;
 
-use Philasearch\Cache\Providers\Redis\Objects\Tree;
+use Philasearch\Cache\Providers\Redis\Objects\RedisTree;
 
 /**
  * Class Node
@@ -32,7 +32,7 @@ class Node
     private $data;
 
     /**
-     * @var Tree
+     * @var RedisTree
      */
     private $tree;
 
@@ -50,11 +50,11 @@ class Node
      * Constructs the node
      *
      * @param       $id
-     * @param Tree  $tree
+     * @param RedisTree  $tree
      * @param array $data
      *
      */
-    public function __construct ( $id, Tree $tree = null, $data = [] )
+    public function __construct ( $id, RedisTree $tree = null, $data = [] )
     {
         $this->data = $data;
         $this->data['id'] = $id;

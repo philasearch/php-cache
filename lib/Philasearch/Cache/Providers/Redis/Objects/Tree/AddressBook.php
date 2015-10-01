@@ -40,7 +40,7 @@ class AddressBook
      */
     public function add ( $key, $id, array $address = [] )
     {
-        $this->client->hset($key, $id, json_encode($address));
+        $this->client->setHashValue($key, $id, json_encode($address));
     }
 
     /**
@@ -53,6 +53,6 @@ class AddressBook
      */
     public function get ( $key, $id )
     {
-        return json_decode($this->client->hget($key, $id), false);
+        return json_decode($this->client->getHashValue($key, $id), false);
     }
 }

@@ -20,7 +20,7 @@ use Philasearch\Cache\Providers\Base;
  * @package Philasearch\Cache\Providers\Redis\Objects
  *
  */
-class Object implements Base\Objects\BaseObject
+class RedisObject implements Base\Objects\BaseObject
 {
     /**
      * @var string
@@ -78,7 +78,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function set ( $field, $value )
     {
-        $this->client->hset($this->key, $field, $value);
+        $this->client->setHashValue($this->key, $field, $value);
 
         $this->data = $this->getAll();
     }
@@ -105,7 +105,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function get ( $field )
     {
-        return $this->client->hget($this->key, $field);
+        return $this->client->getHashValue($this->key, $field);
     }
 
     /**
@@ -115,7 +115,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function getAll ()
     {
-        return $this->client->hgetall($this->key);
+        return $this->client->getHashFull($this->key);
     }
 
     /**
@@ -128,7 +128,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function delete ( $key, $refreshData = true )
     {
-        $this->client->hdel($this->key, $key);
+        $this->client->deleteHashValue($this->key, $key);
 
         if ( $refreshData )
             $this->data = $this->getAll();
@@ -139,7 +139,7 @@ class Object implements Base\Objects\BaseObject
      */
     public function deleteAll ()
     {
-        $data = $this->client->hgetall($this->key);
+        $data = $this->client->getHashFull($this->key);
 
         foreach ( $data as $key => $value )
             $this->delete($key, false);

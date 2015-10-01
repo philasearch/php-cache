@@ -28,7 +28,7 @@ Add the following to your composer.json
 use Philasearch\Cache\Cache;
 use Philasearch\Cache\CacheProviders;
 
-Cache::setup( CacheProviders::REDIS, [
+$cache = new Cache( CacheProviders::REDIS, [
     'scheme'    => 'tcp',
     'host'      => 'localhost',
     'database'  => 0
@@ -44,16 +44,23 @@ resumed to its previous state.
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedObject;
+use Philasearch\Cache\Cache;
+use Philasearch\Cache\CacheProviders;
+
+$cache = new Cache( CacheProviders::REDIS, [
+    'scheme'    => 'tcp',
+    'host'      => 'localhost',
+    'database'  => 0
+]);
 
 // a basic cached object
-$object = new CachedObject('cache_key'); 
+$object = $cache->createObject('cache_key'); 
 
 // a cached object that expires in 10 seconds
-$object = new CachedObject('cache_key', 10);
+$object = $cache->createObject('cache_key', 10);
 
 // a cached object with a value foo that equals bar.
-$object = new CachedObject('cache_key', 0, ['foo' => 'bar']);
+$object = $cache->createObject('cache_key', 0, ['foo' => 'bar']);
 
 // filling the object with an array of variables
 $object->fill(['foo' => 'bar']);
@@ -73,9 +80,16 @@ previous state if created with the same key.
 ```php
 <?php
 
-use Philasearch\Cache\Objects\CachedTree;
+use Philasearch\Cache\Cache;
+use Philasearch\Cache\CacheProviders;
 
-$tree = new CachedTree('cached_key');
+$cache = new Cache( CacheProviders::REDIS, [
+    'scheme'    => 'tcp',
+    'host'      => 'localhost',
+    'database'  => 0
+]);
+
+$tree = $cache->createTree('cached_key');
 
 // a root node with the id of 1 ('the id can also be a string')
 $root = $tree->makeRootNode(1);

@@ -22,7 +22,7 @@ use Philasearch\Cache\Providers\Redis\RedisClient;
  * @package Philasearch\Cache\Providers\Redis\Objects
  *
  */
-class Tree implements BaseTree
+class RedisTree implements BaseTree
 {
     /**
      * @var string
