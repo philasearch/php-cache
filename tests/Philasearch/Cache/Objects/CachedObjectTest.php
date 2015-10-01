@@ -18,7 +18,7 @@ class CachedObjectTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->base = \Mockery::mock('\Philasearch\Cache\Providers\Base\Objects\BaseObject');
-        $this->object = new CachedObject('key', '', 0, [], $this->base);
+        $this->object = new CachedObject('key', 0, [], $this->base);
     }
 
     public function testFillingInObject()

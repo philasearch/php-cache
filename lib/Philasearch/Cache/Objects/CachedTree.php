@@ -43,13 +43,11 @@ class CachedTree
      * Constructs the Cached Object
      *
      * @param string $key
-     * @param string $namespace
      * @param BaseTree $base
      */
-    public function __construct ( $key, $namespace = '', BaseTree $base = null )
+    public function __construct ( $key, BaseTree $base = null )
     {
-        $this->namespace = $namespace;
-        $this->key = ( $namespace != '' ) ? "{$namespace}:{$namespace}" : $key;
+        $this->key = $key;
         $this->base = ( $base != null ) ? $base : Cache::object( $this->key, ObjectType::TREE );
     }
 

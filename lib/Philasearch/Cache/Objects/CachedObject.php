@@ -42,15 +42,13 @@ class CachedObject
      * Constructs the Cached Object
      *
      * @param string $key
-     * @param string $namespace
      * @param int $expire
      * @param array $data
      * @param BaseObject $base
      */
-    public function __construct ( $key, $namespace='', $expire=0, $data=[], BaseObject $base = null )
+    public function __construct ( $key, $expire=0, $data=[], BaseObject $base = null )
     {
-        $this->namespace = $namespace;
-        $this->key = ( $namespace != '' ) ? "{$namespace}:{$key}" : $key;
+        $this->key = $key;
         $this->base = ( $base != null ) ? $base : Cache::object($this->key, ObjectType::OBJECT, $data, $expire);
     }
 

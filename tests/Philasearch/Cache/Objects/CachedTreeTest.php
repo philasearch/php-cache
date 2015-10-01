@@ -18,7 +18,7 @@ class CachedTreeTest extends TestCase
     public function setUp ()
     {
         $this->base = \Mockery::mock('\Philasearch\Cache\Providers\Base\Objects\BaseTree');
-        $this->tree = new CachedTree('key', '', $this->base );
+        $this->tree = new CachedTree('key', $this->base );
     }
 
     public function testSave()

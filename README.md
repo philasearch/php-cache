@@ -52,24 +52,11 @@ use Philasearch\Cache\Objects\CachedObject;
 // a basic cached object
 $object = new CachedObject('cache_key'); 
 
-// a cached object that is put in the namespace foo ("foo:cache_key")
-$object = new CachedObject('cache_key', 'foo');
-
 // a cached object that expires in 10 seconds
-$object = new CachedObject('cache_key', '', 10);
+$object = new CachedObject('cache_key', 10);
 
 // a cached object with a value foo that equals bar.
-$object = new CachedObject('cache_key', '', 0, ['foo' => 'bar']);
-```
-
-This object will have a few methods for setting and getting variable.
-
-```php
-<?php
-
-use Philasearch\Cache\Objects\CachedObject;
-
-$object = new CachedObject('cache_key');
+$object = new CachedObject('cache_key', 0, ['foo' => 'bar']);
 
 // filling the object with an array of variables
 $object->fill(['foo' => 'bar']);
