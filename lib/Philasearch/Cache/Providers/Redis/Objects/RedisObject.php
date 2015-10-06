@@ -40,14 +40,14 @@ class RedisObject implements Base\Objects\BaseObject
     /**
      * Constructs a redis object
      *
-     * @param       $key
-     * @param array $data
-     * @param int   $expire
+     * @param RedisClient $client
+     * @param             $key
+     * @param array       $data
+     * @param int         $expire
      */
-    public function __construct ( $key, array $data = [], $expire = 0 )
+    public function __construct ( RedisClient $client, $key, array $data = [], $expire = 0 )
     {
-        $this->client = new RedisClient();
-
+        $this->client = $client;
         $this->key = $key;
         $this->data = $this->getAll();
 

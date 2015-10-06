@@ -33,8 +33,8 @@ $cache = new Cache ();
 
 // a more specified cache
 $cache = new Cache( CacheProviders::REDIS, [
-    'scheme'    => 'tcp',
     'host'      => 'localhost',
+    'port'      => 6379
     'database'  => 0
 ]);
 ```

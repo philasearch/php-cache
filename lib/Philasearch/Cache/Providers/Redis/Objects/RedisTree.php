@@ -52,16 +52,17 @@ class RedisTree implements BaseTree
     /**
      * Constructs the tree
      *
-     * @param $key
-     * @param $expire
+     * @param RedisClient $client
+     * @param             $key
+     * @param int         $expire
      */
-    public function __construct ( $key, $expire=0 )
+    public function __construct ( RedisClient $client, $key, $expire=0 )
     {
+        $this->client = $client;
         $this->key = $key;
 
         $addressBookKey = $this->key . ":addresses";
 
-        $this->client = new RedisClient();
         $this->addressBook = new AddressBook($this->client, $addressBookKey, $expire);
 
         if ( $expire != 0 )

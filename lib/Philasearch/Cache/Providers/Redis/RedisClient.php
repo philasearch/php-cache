@@ -49,19 +49,6 @@ class RedisClient implements BaseClient
      */
     public function __construct ( $config = [], $options = [] )
     {
-        $this->setup($config, $options);
-    }
-
-    /**
-     * Configures the Redis Client
-     *
-     * @param array $config
-     * @param array $options
-     *
-     * @return mixed
-     */
-    public function setup ( $config = [], $options = [] )
-    {
         $this->connectionString = $this->makeConnectionString($config);
         $this->options = $options;
     }
@@ -228,9 +215,6 @@ class RedisClient implements BaseClient
      */
     private function connect ()
     {
-        if ( $this->connectionString == '' )
-            $this->setup();
-
         if ( $this->redis == null )
         {
             $this->redis = new Client($this->connectionString, $this->options);
@@ -261,7 +245,7 @@ class RedisClient implements BaseClient
      */
     public function createObject ( $key, $data, $expire )
     {
-        return new RedisObject($key, $data, $expire);
+        return new RedisObject( $this, $key, $data, $expire);
     }
 
     /**
@@ -273,7 +257,7 @@ class RedisClient implements BaseClient
      */
     public function createTree ( $key )
     {
-        return new RedisTree($key);
+        return new RedisTree($this, $key);
     }
 
     /**

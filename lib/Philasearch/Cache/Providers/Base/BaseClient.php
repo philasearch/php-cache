@@ -8,16 +8,6 @@ use Philasearch\Cache\Providers\Base\Objects\BaseTree;
 interface BaseClient
 {
     /**
-     * Configures the Redis Client
-     *
-     * @param array $config
-     * @param array $options
-     *
-     * @return mixed
-     */
-    public function setup ( $config = null, $options = [] );
-
-    /**
      * Expires a key in redis after a set time
      *
      * @param string  $key  The key in redis
