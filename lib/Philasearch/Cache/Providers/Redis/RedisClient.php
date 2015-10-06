@@ -32,9 +32,9 @@ class RedisClient implements BaseClient
     private $redis = null;
 
     /**
-     * @var array
+     * @var string
      */
-    private $config = [];
+    private $connectionString = '';
 
     /**
      * @var array
@@ -47,7 +47,7 @@ class RedisClient implements BaseClient
      * @param array $config
      * @param array $options
      */
-    public function __construct ( $config=[], $options=[] )
+    public function __construct ( $config = [], $options = [] )
     {
         $this->setup($config, $options);
     }
@@ -60,12 +60,20 @@ class RedisClient implements BaseClient
      *
      * @return mixed
      */
-    public function setup ( $config=[], $options = [] )
+    public function setup ( $config = [], $options = [] )
     {
-        $this->config = ($config) ? $config : 'tcp://127.0.0.1:6379?database=0';
+        $this->connectionString = $this->makeConnectionString($config);
         $this->options = $options;
+    }
 
-        return $this->connect();
+    /**
+     * Returns the connection string for redis
+     *
+     * @return string
+     */
+    public function getConnectionString ()
+    {
+        return $this->connectionString;
     }
 
     /**
@@ -220,12 +228,12 @@ class RedisClient implements BaseClient
      */
     private function connect ()
     {
-        if ( $this->config == null )
+        if ( $this->connectionString == '' )
             $this->setup();
 
         if ( $this->redis == null )
         {
-            $this->redis = new Client($this->config, $this->options);
+            $this->redis = new Client($this->connectionString, $this->options);
 
             try
             {
@@ -266,5 +274,21 @@ class RedisClient implements BaseClient
     public function createTree ( $key )
     {
         return new RedisTree($key);
+    }
+
+    /**
+     * Creates a connection string from a configuration array
+     *
+     * @param array $config
+     *
+     * @return string
+     */
+    private function makeConnectionString ( $config = [] )
+    {
+        return 'tcp://' . ((array_key_exists('host', $config)) ? $config['host'] : '127.0.0.1')
+        . ':'
+        . (array_key_exists('port', $config) ? $config['port'] : 6379)
+        . '?database='
+        . (array_key_exists('database', $config) ? $config['database'] : 0);
     }
 }
