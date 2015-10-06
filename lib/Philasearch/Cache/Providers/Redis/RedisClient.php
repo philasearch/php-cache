@@ -42,6 +42,17 @@ class RedisClient implements BaseClient
     private $options = [];
 
     /**
+     * Constructs the redis client
+     *
+     * @param array $config
+     * @param array $options
+     */
+    public function __construct ( $config=[], $options=[] )
+    {
+        $this->setup($config, $options);
+    }
+
+    /**
      * Configures the Redis Client
      *
      * @param array $config
@@ -49,7 +60,7 @@ class RedisClient implements BaseClient
      *
      * @return mixed
      */
-    public function setup ( $config = null, $options = [] )
+    public function setup ( $config=[], $options = [] )
     {
         $this->config = ($config) ? $config : 'tcp://127.0.0.1:6379?database=0';
         $this->options = $options;
