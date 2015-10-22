@@ -4,6 +4,8 @@ namespace Philasearch\Cache\Providers\Base;
 
 use Philasearch\Cache\Providers\Base\Objects\BaseObject;
 use Philasearch\Cache\Providers\Base\Objects\BaseTree;
+use Philasearch\Cache\Providers\Redis\Exceptions\CommandException;
+use Philasearch\Cache\Providers\Redis\Exceptions\ConnectionException;
 
 interface BaseClient
 {
@@ -13,7 +15,10 @@ interface BaseClient
      * @param string  $key  The key in redis
      * @param integer $time The time to expire
      *
-     * @return mixed
+     * @return boolean
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function expire ( $key, $time );
 
@@ -22,7 +27,10 @@ interface BaseClient
      *
      * @param $key
      *
-     * @return mixed
+     * @return string
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function get ( $key );
 
@@ -32,7 +40,10 @@ interface BaseClient
      * @param $key
      * @param $field
      *
-     * @return mixed
+     * @return string
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function getHashValue ( $key, $field );
 
@@ -43,7 +54,10 @@ interface BaseClient
      * @param $field
      * @param $value
      *
-     * @return mixed
+     * @return boolean
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function setHashValue ( $key, $field, $value );
 
@@ -52,9 +66,24 @@ interface BaseClient
      *
      * @param $key
      *
-     * @return mixed
+     * @return array
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function getHashFull ( $key );
+
+    /**
+     * Deletes a value from the redis store
+     *
+     * @param $key
+     *
+     * @return boolean
+     *
+     * @throws CommandException
+     * @throws ConnectionException
+     */
+    public function delete ( $key );
 
     /**
      * Deletes a hash value from the redis store
@@ -63,21 +92,31 @@ interface BaseClient
      * @param $field
      *
      * @return mixed
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function deleteHashValue ( $key, $field );
 
     /**
      * Sets a value in the redis store
      *
-     * @param $key
-     * @param $value
+     * @param string  $key
+     * @param string  $value
+     * @param integer $expire
      *
-     * @return mixed
+     * @return boolean
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
-    public function set ( $key, $value );
+    public function set ( $key, $value, $expire = 0 );
 
     /**
      * Clears the redis database
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function clear ();
 
@@ -87,6 +126,9 @@ interface BaseClient
      * @param $pattern
      *
      * @return mixed
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function keys ( $pattern );
 
@@ -98,6 +140,9 @@ interface BaseClient
      * @param $expire
      *
      * @return BaseObject
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function createObject ( $key, $data, $expire );
 
@@ -107,6 +152,9 @@ interface BaseClient
      * @param $key
      *
      * @return BaseTree
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function createTree ( $key );
 }

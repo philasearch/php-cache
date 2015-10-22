@@ -7,7 +7,20 @@ class ClientTest extends TestCase
     public function testGetSet ()
     {
         $this->client->set('foo_key', 'foo_value');
+        $result = $this->client->expire('foo_key', 1);
+        $this->assertTrue($result);
+
         $this->assertEquals('foo_value', $this->client->get('foo_key'));
+    }
+
+    public function testExpire ()
+    {
+        $result = $this->client->expire('foo_key', 1);
+        $this->assertFalse($result);
+
+        $this->client->set('foo_key', 'foo_value');
+        $result = $this->client->expire('foo_key', 1);
+        $this->assertTrue($result);
     }
 
     public function testClearingOfDatabase ()

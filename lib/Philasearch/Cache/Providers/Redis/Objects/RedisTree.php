@@ -12,6 +12,8 @@ namespace Philasearch\Cache\Providers\Redis\Objects;
 use Philasearch\Cache\Providers\Base\Objects\BaseTree;
 use Philasearch\Cache\Providers\Base\Tree\AddressBook;
 use Philasearch\Cache\Providers\Base\Tree\Node;
+use Philasearch\Cache\Providers\Redis\Exceptions\CommandException;
+use Philasearch\Cache\Providers\Redis\Exceptions\ConnectionException;
 use Philasearch\Cache\Providers\Redis\RedisClient;
 
 /**
@@ -53,13 +55,17 @@ class RedisTree implements BaseTree
      * Constructs the tree
      *
      * @param RedisClient $client
-     * @param             $key
-     * @param int         $expire
+     * @param string      $key
+     * @param integer     $expire
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
-    public function __construct ( RedisClient $client, $key, $expire=0 )
+    public function __construct ( RedisClient $client, $key, $expire = 0 )
     {
         $this->client = $client;
         $this->key = $key;
+        $this->data = [];
 
         $addressBookKey = $this->key . ":addresses";
 
@@ -75,42 +81,56 @@ class RedisTree implements BaseTree
 
     /**
      * Saves the tree in the cache
+     *
+     * @return boolean
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function save ()
     {
+        if ( $this->root == null )
+            return false;
+
         $this->data = [$this->root->getData()];
         $cache = json_encode($this->data);
 
-        $this->client->set($this->key, $cache);
-
-        return $this->data;
+        return $this->client->set($this->key, $cache);
     }
 
     /**
      * Caches the node address
      *
-     * @param $id
-     * @param $address
+     * @param string $id
+     * @param string $address
      *
-     * @return mixed|void
+     * @return boolean
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function cacheNodeAddress ( $id, $address )
     {
-        $this->addressBook->add($id, $address);
+        return $this->addressBook->add($id, $address);
     }
 
     /**
      * Makes a root node
      *
-     * @param       $id
-     * @param array $data
+     * @param string $id
+     * @param array  $data
      *
      * @return Node
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function makeRootNode ( $id, $data = [] )
     {
         $this->root = new Node($id, $this, $data);
         $this->root->setAddress([0]);
+
+        $this->save();
 
         return $this->root;
     }
@@ -122,7 +142,10 @@ class RedisTree implements BaseTree
      *
      * @param string $id
      *
-     * @return array|mixed|null
+     * @return array
+     *
+     * @throws CommandException
+     * @throws ConnectionException
      */
     public function toArray ( $id = null )
     {
@@ -134,7 +157,7 @@ class RedisTree implements BaseTree
     /**
      * Returns an array of ids from the nodes in the branch
      *
-     * @param $id
+     * @param string $id
      *
      * @return array
      */
@@ -156,49 +179,6 @@ class RedisTree implements BaseTree
     }
 
     /**
-     * Gets a node branch from the tree
-     *
-     * @param $address
-     *
-     * @return array|mixed|null
-     */
-    private function getNodeBranch ( $address )
-    {
-        $data = $this->getCachedData();
-
-        foreach ( $address as $key )
-        {
-            $data = array_key_exists('children', $data) ? $data['children'][$key] : $data[$key];
-        }
-
-        return $data;
-    }
-
-    /**
-     * Gets the cached data
-     *
-     * @return array|mixed|null
-     */
-    private function getCachedData ()
-    {
-        if ( $this->data != null )
-        {
-            return $this->data;
-        }
-
-        $cache = $this->client->get($this->key);
-
-        if ( $cache == null && $this->root != null )
-        {
-            return $this->save();
-        }
-
-        $this->data = json_decode($cache, true);
-
-        return $this->data;
-    }
-
-    /**
      * Returns the root node
      *
      * @return Node
@@ -215,7 +195,38 @@ class RedisTree implements BaseTree
      */
     public function isEmpty ()
     {
-        return ($this->getCachedData() == null);
+        return ($this->data == []);
+    }
+
+    /**
+     * Gets a node branch from the tree
+     *
+     * @param array $address
+     *
+     * @return array
+     */
+    private function getNodeBranch ( $address )
+    {
+        $data = $this->data;
+
+        foreach ( $address as $key )
+        {
+            $data = array_key_exists('children', $data) ? $data['children'][$key] : $data[$key];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Gets the cached data
+     *
+     * @return array
+     */
+    private function getCachedData ()
+    {
+        $cache = $this->client->get($this->key);
+
+        return json_decode($cache, true);
     }
 
     /**
@@ -223,11 +234,11 @@ class RedisTree implements BaseTree
      */
     private function resume ()
     {
-        $cache = $this->getCachedData();
+        $this->data = $this->getCachedData();
 
-        if ( $cache != null )
+        if ( $this->data != [] )
         {
-            $this->root = new Node($cache[0]['id'], $this, $cache[0]);
+            $this->root = new Node($this->data[0]['id'], $this, $this->data[0]);
             $this->root->resume();
         }
     }
