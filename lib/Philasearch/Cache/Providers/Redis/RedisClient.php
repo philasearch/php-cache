@@ -229,9 +229,24 @@ class RedisClient implements BaseClient
      * @throws CommandException
      * @throws ConnectionException
      */
-    public function keys ( $pattern )
+    public function getKeys ( $pattern )
     {
         return $this->redisFunction('keys', $pattern);
+    }
+
+    /**
+     * Gets all keys from the redis store matching pattern
+     *
+     * @param string $pattern
+     *
+     * @return array
+     *
+     * @throws CommandException
+     * @throws ConnectionException
+     */
+    public function getHashKeys ( $pattern )
+    {
+        return $this->redisFunction('hkeys', $pattern);
     }
 
     /**

@@ -13,6 +13,14 @@ class ClientTest extends TestCase
         $this->assertEquals('foo_value', $this->client->get('foo_key'));
     }
 
+    public function testHashKeys ()
+    {
+        $this->client->setHashValue('hashFoo', 'bar', 'foo bar');
+        $keys = $this->client->getHashKeys('hashFoo');
+
+        $this->assertEquals(['bar'], $keys);
+    }
+
     public function testExpire ()
     {
         $result = $this->client->expire('foo_key', 1);
