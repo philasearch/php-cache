@@ -34,9 +34,9 @@ class RedisClient implements BaseClient
     private $redis = null;
 
     /**
-     * @var string
+     * @var mixed
      */
-    private $connectionString = '';
+    private $connectionStrings;
 
     /**
      * @var array
@@ -46,12 +46,12 @@ class RedisClient implements BaseClient
     /**
      * Constructs the redis client
      *
-     * @param array $config
+     * @param string[] $connectionStrings
      * @param array $options
      */
-    public function __construct ( $config = [], $options = [] )
+    public function __construct ( $connectionStrings = [], $options = [] )
     {
-        $this->connectionString = $this->makeConnectionString($config);
+        $this->connectionStrings = ( $connectionStrings != [] ) ? $connectionStrings : 'tcp://127.0.0.1:6379?database=0';
         $this->options = $options;
     }
 
@@ -60,9 +60,9 @@ class RedisClient implements BaseClient
      *
      * @return string
      */
-    public function getConnectionString ()
+    public function getConnectionStrings ()
     {
-        return $this->connectionString;
+        return $this->connectionStrings;
     }
 
     /**
@@ -313,7 +313,7 @@ class RedisClient implements BaseClient
     {
         if ( $this->redis == null )
         {
-            $this->redis = new Client($this->connectionString, $this->options);
+            $this->redis = new Client($this->connectionStrings, $this->options);
 
             try
             {
@@ -328,21 +328,5 @@ class RedisClient implements BaseClient
         }
 
         return $this->redis;
-    }
-
-    /**
-     * Creates a connection string from a configuration array
-     *
-     * @param array $config
-     *
-     * @return string
-     */
-    private function makeConnectionString ( $config = [] )
-    {
-        return 'tcp://' . ((array_key_exists('host', $config)) ? $config['host'] : '127.0.0.1')
-        . ':'
-        . (array_key_exists('port', $config) ? $config['port'] : 6379)
-        . '?database='
-        . (array_key_exists('database', $config) ? $config['database'] : 0);
     }
 }
