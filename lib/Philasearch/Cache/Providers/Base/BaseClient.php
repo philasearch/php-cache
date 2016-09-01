@@ -12,7 +12,7 @@ interface BaseClient
     /**
      * Expires a key in redis after a set time
      *
-     * @param string  $key  The key in redis
+     * @param string $key The key in redis
      * @param integer $time The time to expire
      *
      * @return boolean
@@ -101,8 +101,8 @@ interface BaseClient
     /**
      * Sets a value in the redis store
      *
-     * @param string  $key
-     * @param string  $value
+     * @param string $key
+     * @param string $value
      * @param integer $expire
      *
      * @return boolean
@@ -161,12 +161,13 @@ interface BaseClient
     /**
      * Returns a new tree object
      *
-     * @param $key
+     * @param string $key
+     * @param integer $expire
      *
      * @return BaseTree
      *
      * @throws CommandException
      * @throws ConnectionException
      */
-    public function createTree ( $key );
+    public function createTree ( $key, $expire = 0 );
 }

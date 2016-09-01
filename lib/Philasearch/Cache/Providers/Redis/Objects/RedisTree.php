@@ -52,11 +52,16 @@ class RedisTree implements BaseTree
     private $addressBook;
 
     /**
+     * @var integer
+     */
+    private $expire = 0;
+
+    /**
      * Constructs the tree
      *
      * @param RedisClient $client
-     * @param string      $key
-     * @param integer     $expire
+     * @param string $key
+     * @param integer $expire
      *
      * @throws CommandException
      * @throws ConnectionException
@@ -66,15 +71,9 @@ class RedisTree implements BaseTree
         $this->client = $client;
         $this->key = $key;
         $this->data = [];
-
+        $this->expire = $expire;
         $addressBookKey = $this->key . ":addresses";
-
         $this->addressBook = new AddressBook($this->client, $addressBookKey, $expire);
-
-        if ( $expire != 0 )
-        {
-            $this->client->expire($key, $expire);
-        }
 
         $this->resume();
     }
@@ -90,12 +89,20 @@ class RedisTree implements BaseTree
     public function save ()
     {
         if ( $this->root == null )
+        {
             return false;
+        }
 
         $this->data = [$this->root->getData()];
         $cache = json_encode($this->data);
+        $result = $this->client->set($this->key, $cache);
 
-        return $this->client->set($this->key, $cache);
+        if ( $this->expire != 0 )
+        {
+            $this->client->expire($this->key, $this->expire);
+        }
+
+        return $result;
     }
 
     /**
@@ -118,7 +125,7 @@ class RedisTree implements BaseTree
      * Makes a root node
      *
      * @param string $id
-     * @param array  $data
+     * @param array $data
      *
      * @return Node
      *

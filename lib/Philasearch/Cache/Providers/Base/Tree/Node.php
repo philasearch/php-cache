@@ -147,9 +147,6 @@ class Node
         $child->setAddress($address, $saveToCache);
         $child->resume();
 
-        if ( $this->tree != null )
-            $this->tree->save();
-
         return $child;
     }
 

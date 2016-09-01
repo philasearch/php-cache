@@ -58,13 +58,14 @@ class Cache
     /**
      * Creates a cached tree
      *
-     * @param $key
+     * @param string $key
+     * @param integer $expire
      *
      * @return BaseTree
      */
-    public function createTree ( $key )
+    public function createTree ( $key, $expire = 0 )
     {
-        return $this->client->createTree($key);
+        return $this->client->createTree($key, $expire);
     }
 
     /**

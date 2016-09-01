@@ -46,6 +46,7 @@ class TreeTest extends TestCase
         $tree = new RedisTree($this->client, 'key');
         $root = $tree->makeRootNode('0', ['foo' => 'bar']);
         $root->addChild('1', ["foo" => "bar2"]);
+        $tree->save();
 
         $expect = [
             "id" => '0',
@@ -68,6 +69,7 @@ class TreeTest extends TestCase
         $child = $root->addChild('1', ["foo" => "bar2"]);
 
         $child->addChild('2', ['foo' => 'bar3']);
+        $tree->save();
 
         $expect = [
             'id' => '0',
@@ -96,6 +98,7 @@ class TreeTest extends TestCase
         $child = $root->addChild('1', ["foo" => "bar2"]);
 
         $child->addChild('2', ['foo' => 'bar3']);
+        $tree->save();
 
         $expect = [
             'id' => '1',

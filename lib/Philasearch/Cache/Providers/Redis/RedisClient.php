@@ -267,12 +267,13 @@ class RedisClient implements BaseClient
      * Returns a new tree object
      *
      * @param string $key
+     * @param integer $expire
      *
      * @return BaseTree
      */
-    public function createTree ( $key )
+    public function createTree ( $key, $expire = 0 )
     {
-        return new RedisTree($this, $key);
+        return new RedisTree($this, $key, $expire);
     }
 
     /**
