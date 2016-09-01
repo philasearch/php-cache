@@ -34,23 +34,16 @@ class AddressBook
     private $key;
 
     /**
-     * @var integer
-     */
-    private $expire = 0;
-
-    /**
      * @param BaseClient $client
      * @param string $key
-     * @param int $expire
      *
      * @throws CommandException
      * @throws ConnectionException
      */
-    public function __construct ( $client, $key, $expire = 0 )
+    public function __construct ( $client, $key)
     {
         $this->client = $client;
         $this->key = $key;
-        $this->expire = $expire;
     }
 
     /**
@@ -66,14 +59,7 @@ class AddressBook
      */
     public function add ( $id, array $address = [] )
     {
-        $result = $this->client->setHashValue($this->key, $id, json_encode($address));
-
-        if ( $this->expire != 0 )
-        {
-            $this->client->expire($this->key, $this->expire);
-        }
-
-        return $result;
+        return $this->client->setHashValue($this->key, $id, json_encode($address));
     }
 
     /**

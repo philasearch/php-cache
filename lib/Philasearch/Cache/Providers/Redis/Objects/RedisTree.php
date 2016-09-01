@@ -73,7 +73,7 @@ class RedisTree implements BaseTree
         $this->data = [];
         $this->expire = $expire;
         $addressBookKey = $this->key . ":addresses";
-        $this->addressBook = new AddressBook($this->client, $addressBookKey, $expire);
+        $this->addressBook = new AddressBook($this->client, $addressBookKey);
 
         $this->resume();
     }
