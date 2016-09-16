@@ -277,6 +277,21 @@ class RedisClient implements BaseClient
     }
 
     /**
+     * Increments an integer key
+     *
+     * @param $key
+     *
+     * @return integer
+     *
+     * @throws CommandException
+     * @throws ConnectionException
+     */
+    public function increment ( $key )
+    {
+        return $this->redisFunction('INCR', $key);
+    }
+
+    /**
      * Runs a redis function
      *
      * @return mixed
@@ -308,7 +323,7 @@ class RedisClient implements BaseClient
     /**
      * Connects to the redis client
      *
-     * @return null|RedisClient
+     * @return null|Client
      */
     private function connect ()
     {
