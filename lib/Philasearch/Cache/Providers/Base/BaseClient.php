@@ -182,4 +182,18 @@ interface BaseClient
      * @throws ConnectionException
      */
     public function increment ( $key );
+
+    /**
+     * Increments an hash integer key
+     *
+     * @param $key
+     * @param $field
+     * @param $byValue
+     *
+     * @return integer
+     *
+     * @throws CommandException
+     * @throws ConnectionException
+     */
+    public function incrementHashKey ( $hash, $field, $byValue = 1 );
 }

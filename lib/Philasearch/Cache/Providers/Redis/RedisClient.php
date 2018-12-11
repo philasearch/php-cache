@@ -292,6 +292,21 @@ class RedisClient implements BaseClient
     }
 
     /**
+     * Increments an hash integer key
+     *
+     * @param $key
+     * @param $field
+     * @param $byValue
+     *
+     * @throws CommandException
+     * @throws ConnectionException
+     */
+    public function incrementHashKey ( $key, $field, $byValue = 1 )
+    {
+        return $this->redisFunction('HINCRBY', $key, $field, $byValue);
+    }
+
+    /**
      * Runs a redis function
      *
      * @return mixed
